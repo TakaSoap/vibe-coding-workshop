@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Coding with Canva Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="progress-bar" id="progress"></div>
+
+<!-- ============================================= -->
+<!-- SLIDES                                        -->
+<!-- ============================================= -->
+<div class="slides-container">
+
+  <!-- ===== Slide 0 : Pre-show ===== -->
+  <section class="slide slide--center" data-slide="0">
+    <div class="slide-inner fade-content">
+      <p class="label">Workshop starts at 12 : 00</p>
+      <h2 class="mt-sm">Welcome</h2>
+      <p class="subtitle mt-sm">Please scan the QR code or visit the link below to access today&rsquo;s materials.</p>
+
+      <div class="card mt-md" style="padding:var(--space-lg);text-align:center;max-width:360px;">
+        <div id="qr-placeholder" style="width:180px;height:180px;margin:0 auto var(--space-sm);border:2px dashed var(--border-default);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+          <span class="label">QR Code</span>
+        </div>
+        <p class="mono" style="font-size:var(--text-sm);word-break:break-all;">https://your-handout-url.pages.dev</p>
+      </div>
+
+      <div class="music-player interactive mt-md">
+        <button id="music-toggle" aria-label="Play music">&#9654;</button>
+        <span style="font-size:var(--text-xs);color:var(--text-tertiary);">Background Music</span>
+        <audio id="bg-music" loop preload="none">
+          <!-- CC0 music source — replace with actual URL -->
+        </audio>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 1 : Title ===== -->
+  <section class="slide slide--center" data-slide="1">
+    <div class="slide-inner">
+      <p class="label fade-content">HKU Libraries &middot; Workshop</p>
+      <h1 data-morph-id="main-title" class="mt-sm">
+        <span class="text-gradient">Vibe Coding</span> with Canva Code
+      </h1>
+      <p class="subtitle fade-content mt-sm">From Static Slides to Interactive Teaching &amp; Presentation Aids</p>
+      <p class="fade-content mt-md" style="font-size:var(--text-sm);color:var(--text-tertiary);">Zesen Gao &middot; Learning Technology Developer, HKU Libraries</p>
+    </div>
+  </section>
+
+  <!-- ===== Slide 2 : The End Goal ===== -->
+  <section class="slide slide--split" data-slide="2">
+    <div class="slide-inner">
+
+      <!-- Left: boring slide mockup -->
+      <div class="fade-content">
+        <p class="label mb-sm">The old way</p>
+        <div class="boring-slide">
+          <h4>Project Showcase</h4>
+          <ul>
+            <li>Project Alpha &mdash; Climate analysis tool</li>
+            <li>Project Beta &mdash; Student feedback app</li>
+            <li>Project Gamma &mdash; Lab data dashboard</li>
+            <li>Project Delta &mdash; Policy comparison</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right: interactive demo -->
+      <div class="fade-content">
+        <p class="label mb-sm">What you will build today</p>
+        <div class="card interactive" id="mini-demo">
+          <div style="display:flex;gap:6px;margin-bottom:var(--space-sm);flex-wrap:wrap;">
+            <button class="tag mini-tab active" data-filter="all">All</button>
+            <button class="tag mini-tab" data-filter="science">Science</button>
+            <button class="tag mini-tab" data-filter="design">Design</button>
+            <button class="tag mini-tab" data-filter="policy">Policy</button>
+          </div>
+          <div id="mini-cards" style="display:flex;flex-direction:column;gap:8px;">
+            <div class="mini-card" data-tags="science" style="padding:10px 14px;background:var(--bg-surface);border-radius:8px;border:1px solid var(--border-subtle);cursor:pointer;">
+              <strong style="font-size:var(--text-sm);">Climate Model</strong>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px;">Interactive variable simulation</p>
+            </div>
+            <div class="mini-card" data-tags="design" style="padding:10px 14px;background:var(--bg-surface);border-radius:8px;border:1px solid var(--border-subtle);cursor:pointer;">
+              <strong style="font-size:var(--text-sm);">Portfolio</strong>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px;">Filterable project showcase</p>
+            </div>
+            <div class="mini-card" data-tags="policy" style="padding:10px 14px;background:var(--bg-surface);border-radius:8px;border:1px solid var(--border-subtle);cursor:pointer;">
+              <strong style="font-size:var(--text-sm);">Policy Timeline</strong>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px;">Case evolution explorer</p>
+            </div>
+            <div class="mini-card" data-tags="science" style="padding:10px 14px;background:var(--bg-surface);border-radius:8px;border:1px solid var(--border-subtle);cursor:pointer;">
+              <strong style="font-size:var(--text-sm);">Lab Dashboard</strong>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px;">Real-time data explorer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Slide 3 : What is Vibe Coding? ===== -->
+  <section class="slide slide--center" data-slide="3">
+    <div class="slide-inner">
+      <h2 class="fade-content">What is <span class="text-gradient">&ldquo;Vibe Coding&rdquo;</span>?</h2>
+      <p class="fade-content mt-sm" style="max-width:720px;">
+        The term was coined by AI researcher <strong>Andrej Karpathy</strong> in early 2025.
+        It became Collins Dictionary&rsquo;s Word of the Year 2025.
+      </p>
+      <div class="flow mt-lg fade-content">
+        <span class="flow-step"><span class="tag">Describe</span></span>
+        <span class="flow-arrow">&#8594;</span>
+        <span class="flow-step"><span class="tag">Generate</span></span>
+        <span class="flow-arrow">&#8594;</span>
+        <span class="flow-step"><span class="tag">Inspect</span></span>
+        <span class="flow-arrow">&#8594;</span>
+        <span class="flow-step"><span class="tag">Refine</span></span>
+      </div>
+      <p class="fade-content mt-lg" style="max-width:720px;">
+        Instead of writing code yourself, you describe what you want in plain language.
+        The AI writes the code, you check the result, and you tell it what to change.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Slide 4 : Low-Stakes Academic Vibe Coding ===== -->
+  <section class="slide slide--center" data-slide="4">
+    <div class="slide-inner">
+      <p class="label fade-content">&#9888;&#65039; Important Context</p>
+      <h2 class="fade-content mt-sm">Low-Stakes Academic<br><span class="text-gradient">Vibe Coding</span></h2>
+      <p class="fade-content mt-sm subtitle" style="max-width:700px;">
+        We are not building production software.
+        We are creating lightweight, interactive teaching and presentation aids.
+      </p>
+      <div class="widget-container interactive mt-lg fade-content" id="edu-widget-container" style="max-width:700px;min-height:350px;display:flex;align-items:center;justify-content:center;">
+        <p class="label">[Educational Physics Widget — will be built in widget phase]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 5 : The Enthusiastic Intern ===== -->
+  <section class="slide slide--center" data-slide="5">
+    <div class="slide-inner">
+      <h2 class="fade-content">The <span class="text-accent">&ldquo;Enthusiastic Intern&rdquo;</span> Rule</h2>
+      <p class="fade-content mt-sm subtitle" style="max-width:720px;">
+        Canva Code has limited capabilities. Think of it as a helpful but inexperienced
+        assistant &mdash; great with simple tasks, unreliable with complex ones.
+      </p>
+      <div class="golden-rule mt-lg fade-content">
+        Keep it small. Keep it useful. Keep it stable.
+      </div>
+      <p class="fade-content mt-md" style="max-width:600px;font-size:var(--text-sm);color:var(--text-tertiary);">
+        Simple card layout? Excellent. 3D animated neon simulator? The intern will panic.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Slide 6 : Three Tracks ===== -->
+  <section class="slide slide--columns" data-slide="6">
+    <div class="slide-inner">
+      <h2 class="fade-content">Pick Your Track</h2>
+      <p class="subtitle fade-content">We have people from across the university &mdash; from sciences to humanities, from medicine to architecture.</p>
+      <div class="track-card fade-content">
+        <div class="track-number">01</div>
+        <h3>Project Showcase</h3>
+        <p class="mt-xs">Filterable card gallery for projects, portfolios, or ideas.</p>
+        <span class="tag mt-sm">General</span>
+      </div>
+      <div class="track-card fade-content">
+        <div class="track-number">02</div>
+        <h3>Case Explorer</h3>
+        <p class="mt-xs">Interactive timeline where each milestone is clickable and shows details.</p>
+        <span class="tag mt-sm">Humanities / Law</span>
+      </div>
+      <div class="track-card fade-content">
+        <div class="track-number">03</div>
+        <h3>Concept Explorer</h3>
+        <p class="mt-xs">Adjust a slider, see how the result changes &mdash; e.g. a compound interest calculator.</p>
+        <span class="tag mt-sm">STEM / Med</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 7 : Live Build ===== -->
+  <section class="slide slide--top" data-slide="7">
+    <div class="slide-inner">
+      <h2 class="fade-content">Live Build: Step by Step</h2>
+      <p class="fade-content mt-sm" style="max-width:750px;">
+        On the Canva homepage, click the <strong>Canva AI</strong> text box. Then click the <strong>Code</strong> button at the bottom.
+        <br><span style="color:var(--text-tertiary);font-size:var(--text-sm);">Tip: do not just type and press Enter &mdash; that opens design mode, not code mode.</span>
+      </p>
+      <div class="prompt-box mt-lg fade-content">
+        <button class="btn copy-btn" style="position:absolute;top:var(--space-sm);right:var(--space-sm);">
+          <span>Copy</span>
+          <span class="copy-toast">Copied!</span>
+        </button>
+        <p class="label mb-sm">Track 1 &mdash; Prompt</p>
+        <p class="prompt-text" style="white-space:pre-wrap;">Build an interactive project showcase for a university presentation. Show 6 cards with a title, one-line summary, and tags. Add tag filters at the top and a search box. When a card is clicked, show a detail view with more information. Use a clean, professional design.</p>
+      </div>
+      <p class="fade-content mt-md" style="max-width:700px;">
+        Notice the structure: we specified the <strong>audience</strong>, the <strong>inputs</strong>
+        (filters, search), the <strong>behavior</strong> (click for details), and the <strong>style</strong> (clean, professional).
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Slide 8 : Inspecting and Refining ===== -->
+  <section class="slide slide--center" data-slide="8">
+    <div class="slide-inner">
+      <h2 class="fade-content">Inspect &amp; Refine</h2>
+      <div class="fade-content mt-lg" style="display:flex;gap:var(--space-lg);flex-wrap:wrap;justify-content:center;">
+        <div class="card" style="max-width:320px;">
+          <p class="label">Scenario A &mdash; Fix something</p>
+          <p class="mt-xs" style="font-size:var(--text-sm);">&ldquo;The filter button does not work. Please fix it. Keep everything else the same.&rdquo;</p>
+        </div>
+        <div class="card" style="max-width:320px;">
+          <p class="label">Scenario B &mdash; Improve it</p>
+          <p class="mt-xs" style="font-size:var(--text-sm);">&ldquo;This looks great. Make the text larger for a presentation, and change the colors to blue and grey.&rdquo;</p>
+        </div>
+      </div>
+      <p class="fade-content mt-lg subtitle" style="max-width:600px;">
+        Then click <strong>&ldquo;Use in a design&rdquo;</strong> to embed it directly in your slide.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Slide 9 : Sprint 1 ===== -->
+  <section class="slide slide--center" data-slide="9">
+    <div class="slide-inner">
+      <h2 class="fade-content">Your Turn</h2>
+      <div class="countdown interactive mt-md" id="countdown-container">
+        <span id="countdown-display">20:00</span>
+        <div class="mt-sm">
+          <button class="btn btn--primary" id="countdown-btn">Start</button>
+        </div>
+      </div>
+      <div class="fade-content mt-lg" style="display:flex;gap:var(--space-lg);flex-wrap:wrap;justify-content:center;text-align:left;">
+        <div>
+          <p class="label">Step 1</p>
+          <p style="font-size:var(--text-sm);">Open Canva AI &rarr; Code</p>
+        </div>
+        <div>
+          <p class="label">Step 2</p>
+          <p style="font-size:var(--text-sm);">Pick Track 1, 2, or 3 from the handout</p>
+        </div>
+        <div>
+          <p class="label">Step 3</p>
+          <p style="font-size:var(--text-sm);">Paste the prompt &amp; hit Submit</p>
+        </div>
+      </div>
+      <p class="fade-content mt-md" style="font-size:var(--text-sm);color:var(--text-tertiary);max-width:600px;">
+        No topic in mind? Use the dummy content from the handout. The goal is to learn the workflow, not to publish a paper.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Slide 10 : Sprint 2 — Interactive Sandwich ===== -->
+  <section class="slide slide--center" data-slide="10">
+    <div class="slide-inner">
+      <h2 class="fade-content">The &ldquo;Interactive Sandwich&rdquo;</h2>
+      <p class="subtitle fade-content mt-sm" style="max-width:600px;">
+        Do not just drop a widget onto a blank slide. Frame it with purpose.
+      </p>
+      <div class="sandwich mt-lg fade-content">
+        <div class="sandwich-layer sandwich-bread">&#x1F35E; Setup &mdash; Tell your audience <em>why</em> they are interacting</div>
+        <div class="sandwich-layer sandwich-meat">&#x1F969; Your Widget &mdash; The interactive component</div>
+        <div class="sandwich-layer sandwich-bread">&#x1F35E; Synthesis &mdash; What is the takeaway?</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 11 : The Illusion of Understanding ===== -->
+  <section class="slide slide--center" data-slide="11">
+    <div class="slide-inner">
+      <h2 class="fade-content" style="max-width:700px;">Interaction &ne; Understanding</h2>
+      <p class="subtitle fade-content mt-sm" style="max-width:650px;">
+        A professional-looking interface does not guarantee accurate content.
+        Always verify the substance behind the design.
+      </p>
+      <div class="fade-content mt-lg" style="display:flex;gap:var(--space-lg);flex-wrap:wrap;justify-content:center;">
+        <div class="card" style="max-width:280px;text-align:center;">
+          <p class="text-accent" style="font-size:var(--text-2xl);">&#10004;</p>
+          <p class="label mt-xs">Good for</p>
+          <p style="font-size:var(--text-sm);" class="mt-xs">Low-stakes exploration, teaching aids, prototypes</p>
+        </div>
+        <div class="card" style="max-width:280px;text-align:center;">
+          <p style="font-size:var(--text-2xl);color:#ff4466;">&#10006;</p>
+          <p class="label mt-xs">Not for</p>
+          <p style="font-size:var(--text-sm);" class="mt-xs">Clinical decisions, legal advice, graded assessments</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 12 : Native vs Custom ===== -->
+  <section class="slide slide--center" data-slide="12">
+    <div class="slide-inner">
+      <h2 class="fade-content">When to Use What</h2>
+      <div class="compare-grid mt-lg fade-content" style="max-width:800px;">
+        <div class="card">
+          <p class="label text-accent">Canva Native Features</p>
+          <ul class="mt-sm" style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:var(--text-sm);">&#x2022; Polls &amp; Q&amp;A (Canva Live)</li>
+            <li style="font-size:var(--text-sm);">&#x2022; Quizzes</li>
+            <li style="font-size:var(--text-sm);">&#x2022; Forms &amp; surveys</li>
+            <li style="font-size:var(--text-sm);">&#x2022; Standard templates</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="label text-accent">Canva Code (Vibe Coding)</p>
+          <ul class="mt-sm" style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:var(--text-sm);">&#x2022; Custom explorers</li>
+            <li style="font-size:var(--text-sm);">&#x2022; Variable simulators</li>
+            <li style="font-size:var(--text-sm);">&#x2022; Unique data showcases</li>
+            <li style="font-size:var(--text-sm);">&#x2022; Anything templates can&rsquo;t do</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 13 : Where to Go Next ===== -->
+  <section class="slide slide--center" data-slide="13">
+    <div class="slide-inner">
+      <h2 class="fade-content">Where to Go Next</h2>
+      <div class="fade-content mt-lg flex-col gap-md" style="max-width:600px;text-align:left;">
+        <div style="display:flex;gap:var(--space-sm);align-items:baseline;">
+          <span class="text-gradient" style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;">1</span>
+          <p>Save your prompts. Reuse the structure, swap the content.</p>
+        </div>
+        <div style="display:flex;gap:var(--space-sm);align-items:baseline;">
+          <span class="text-gradient" style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;">2</span>
+          <p>Build a personal library of interaction patterns.</p>
+        </div>
+        <div style="display:flex;gap:var(--space-sm);align-items:baseline;">
+          <span class="text-gradient" style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;">3</span>
+          <p>Next time you make a presentation, ask: <em>&ldquo;Could one slide be interactive?&rdquo;</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 14 : Thank You ===== -->
+  <section class="slide slide--center" data-slide="14">
+    <div class="slide-inner">
+      <h2 class="fade-content">Thank You</h2>
+      <blockquote class="fade-content mt-lg" style="max-width:650px;font-size:var(--text-lg);font-style:normal;">
+        The new skill is not coding &mdash; it is knowing what you want and saying it clearly.
+      </blockquote>
+      <p class="fade-content mt-lg" style="font-size:var(--text-sm);color:var(--text-tertiary);">
+        Zesen Gao &middot; <a href="mailto:zesen@hku.hk">zesen@hku.hk</a>
+      </p>
+    </div>
+  </section>
+
+</div>
+<!-- END SLIDES -->
+
+<!-- ============================================= -->
+<!-- Navigation UI                                 -->
+<!-- ============================================= -->
+<nav class="slide-nav">
+  <div class="nav-dots"></div>
+  <div class="slide-counter">
+    <span id="counter-current">1</span>/<span id="counter-total">15</span>
+  </div>
+</nav>
+
+<div class="fs-corner-zone"></div>
+<button class="fs-btn" id="fs-btn" title="Fullscreen (F)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>
+  </svg>
+</button>
+
+<!-- ============================================= -->
+<!-- Scripts                                       -->
+<!-- ============================================= -->
+<script src="js/background.js"></script>
+<script type="module" src="js/engine.js"></script>
+<script src="widgets/gas-law.js" defer></script>
+
+<script>
+/* --- Music toggle --- */
+document.addEventListener('DOMContentLoaded', function() {
+  var toggle = document.getElementById('music-toggle');
+  var audio = document.getElementById('bg-music');
+  if (!toggle || !audio) return;
+  var playing = false;
+  toggle.addEventListener('click', function() {
+    if (playing) { audio.pause(); toggle.textContent = '\u25B6'; }
+    else { audio.play().catch(function(){}); toggle.textContent = '\u23F8'; }
+    playing = !playing;
+  });
+});
+
+/* --- Mini demo tab filter (Slide 2) --- */
+document.addEventListener('DOMContentLoaded', function() {
+  var demo = document.getElementById('mini-demo');
+  if (!demo) return;
+  var tabs = demo.querySelectorAll('.mini-tab');
+  var cards = demo.querySelectorAll('.mini-card');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.stopPropagation();
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var f = tab.dataset.filter;
+      cards.forEach(function(c) {
+        c.style.display = (f === 'all' || c.dataset.tags === f) ? '' : 'none';
+      });
+    });
+  });
+});
+
+/* --- Countdown timer (Slide 9) --- */
+document.addEventListener('DOMContentLoaded', function() {
+  var display = document.getElementById('countdown-display');
+  var btn = document.getElementById('countdown-btn');
+  if (!display || !btn) return;
+  var total = 20 * 60;
+  var running = false;
+  var interval = null;
+
+  function render() {
+    var m = Math.floor(total / 60);
+    var s = total % 60;
+    display.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    if (total <= 0) {
+      display.style.color = '#ff4466';
+      clearInterval(interval);
+      running = false;
+      btn.textContent = 'Reset';
+    }
+  }
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (total <= 0) {
+      total = 20 * 60;
+      display.style.color = '';
+      btn.textContent = 'Start';
+      render();
+      return;
+    }
+    if (running) {
+      clearInterval(interval);
+      running = false;
+      btn.textContent = 'Resume';
+    } else {
+      interval = setInterval(function() { total--; render(); }, 1000);
+      running = true;
+      btn.textContent = 'Pause';
+    }
+  });
+
+  render();
+});
+</script>
+
+</body>
+</html>

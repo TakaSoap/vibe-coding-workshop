@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handout — Vibe Coding with Canva Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-teal: #00c4cc;
+      --color-purple: #6f00ff;
+      --bg-base: #16171d;
+      --bg-surface: #1e2028;
+      --bg-card: #252730;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9a9cb0;
+      --text-tertiary: #5c5e6d;
+      --border-subtle: rgba(255,255,255,0.06);
+      --border-default: rgba(255,255,255,0.10);
+      --font-display: 'JetBrains Mono', monospace;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 2rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em; }
+    h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+    h3 { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--color-teal); margin-bottom: 0.5rem; }
+    p { color: var(--text-secondary); margin-bottom: 0.75rem; }
+    .text-gradient {
+      background: linear-gradient(135deg, var(--color-teal), var(--color-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .header { text-align: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); }
+    .header p { color: var(--text-tertiary); font-size: 0.9rem; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; }
+    .tab-btn {
+      font-family: var(--font-display); font-size: 0.85rem;
+      padding: 0.5em 1.2em; border-radius: 8px;
+      background: var(--bg-card); color: var(--text-secondary);
+      border: 1px solid var(--border-subtle); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { border-color: var(--border-default); color: var(--text-primary); }
+    .tab-btn.active { background: var(--color-teal); color: var(--bg-base); border-color: var(--color-teal); font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Prompt box */
+    .prompt-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: 1.25rem;
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .prompt-box pre {
+      font-family: var(--font-display); font-size: 0.85rem;
+      color: var(--text-secondary); white-space: pre-wrap; line-height: 1.65;
+    }
+    .copy-btn {
+      position: absolute; top: 0.75rem; right: 0.75rem;
+      font-family: var(--font-display); font-size: 0.75rem;
+      padding: 0.3em 0.8em; border-radius: 6px;
+      background: var(--bg-card); color: var(--text-secondary);
+      border: 1px solid var(--border-subtle); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { color: var(--text-primary); border-color: var(--border-default); }
+    .copy-btn.copied { color: var(--color-teal); border-color: var(--color-teal); }
+
+    .label { font-family: var(--font-display); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 0.5rem; }
+
+    .dummy-data {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 0.75rem;
+      position: relative;
+    }
+    .dummy-data pre {
+      font-family: var(--font-display); font-size: 0.8rem;
+      color: var(--text-tertiary); white-space: pre-wrap; line-height: 1.6;
+    }
+
+    /* Workflow section */
+    .flow-steps {
+      display: flex; gap: 0.75rem; flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    .flow-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.6em 1em;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .flow-arrow { color: var(--text-tertiary); font-size: 1.2rem; display: flex; align-items: center; }
+
+    /* Cheat sheet */
+    .cheat { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); }
+    .tip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem; }
+    .tip {
+      background: var(--bg-card); border-radius: 8px; padding: 0.75rem;
+      border: 1px solid var(--border-subtle);
+    }
+    .tip strong { color: var(--text-primary); font-size: 0.85rem; }
+    .tip p { font-size: 0.8rem; margin: 0.25rem 0 0; }
+
+    @media (max-width: 600px) {
+      body { padding: 1rem; }
+      .tip-grid { grid-template-columns: 1fr; }
+      .tabs { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span class="text-gradient">Vibe Coding</span> with Canva Code</h1>
+  <p>Workshop Handout &middot; HKU Libraries &middot; 25 March 2026</p>
+</div>
+
+<!-- ====== Workflow Overview ====== -->
+<h2>The Workflow</h2>
+<div class="flow-steps">
+  <span class="flow-step">1. Describe</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">2. Generate</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">3. Inspect</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">4. Refine</span>
+</div>
+<p>Open <strong>canva.com</strong> &rarr; Click the <strong>Canva AI</strong> text box &rarr; Click the <strong>Code</strong> button at the bottom.</p>
+
+<!-- ====== Track Selector ====== -->
+<h2>Choose Your Track</h2>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="track1">Track 1: Project Showcase</button>
+  <button class="tab-btn" data-tab="track2">Track 2: Case Explorer</button>
+  <button class="tab-btn" data-tab="track3">Track 3: Concept Explorer</button>
+</div>
+
+<!-- Track 1 -->
+<div class="tab-panel active" id="track1">
+  <h3>Project / Idea Showcase</h3>
+  <p>Best for: Anyone who wants to present a portfolio of projects with clickable tags and filters.</p>
+
+  <p class="label">Prompt Template</p>
+  <div class="prompt-box">
+    <button class="copy-btn" data-target="t1-prompt">Copy</button>
+    <pre id="t1-prompt">Build an interactive project showcase for a university presentation. Show 6 cards with a title, one-line summary, and tags. Add tag filters at the top and a search box. When a card is clicked, show a detail view with more information. Use a clean, professional design.</pre>
+  </div>
+
+  <p class="label">Dummy Content (paste this after the prompt, or replace with your own)</p>
+  <div class="dummy-data">
+    <button class="copy-btn" data-target="t1-data" style="top:0.5rem;right:0.5rem;">Copy</button>
+    <pre id="t1-data">Use these 6 projects:
+
+1. "Urban Heat Map" — Mapping city temperatures using sensor data. Tags: Science, GIS
+2. "Legal Aid Chatbot" — AI assistant for basic legal questions. Tags: Law, AI
+3. "Patient Triage Tool" — Symptom-based priority sorting for clinics. Tags: Medicine, AI
+4. "Heritage Walk AR" — Augmented-reality walking tour of historic sites. Tags: Humanities, Design
+5. "Budget Planner" — Interactive household budget calculator. Tags: Education, Finance
+6. "Lab Notebook" — Digital lab journal with photo upload. Tags: Science, Education</pre>
+  </div>
+</div>
+
+<!-- Track 2 -->
+<div class="tab-panel" id="track2">
+  <h3>Case / Timeline Explorer</h3>
+  <p>Best for: Humanities, Law, Education, or anyone working with cases, policies, or historical arguments.</p>
+
+  <p class="label">Prompt Template</p>
+  <div class="prompt-box">
+    <button class="copy-btn" data-target="t2-prompt">Copy</button>
+    <pre id="t2-prompt">Build an interactive timeline showing the evolution of data privacy legislation. Show 5 milestones in chronological order on a horizontal timeline. When a milestone is clicked, display a short description of that law and its key impact. Use a clean, professional design.</pre>
+  </div>
+
+  <p class="label">Dummy Content</p>
+  <div class="dummy-data">
+    <button class="copy-btn" data-target="t2-data" style="top:0.5rem;right:0.5rem;">Copy</button>
+    <pre id="t2-data">Use these 5 milestones:
+
+1. 1995 — EU Data Protection Directive: First major EU regulation on personal data. Required member states to protect privacy during data processing.
+
+2. 1996 — HIPAA (USA): Health Insurance Portability Act. Set standards for protecting sensitive patient health information.
+
+3. 2018 — GDPR (EU): General Data Protection Regulation. Gave individuals control over personal data. Major fines for violations. Global impact.
+
+4. 2020 — CCPA (California): California Consumer Privacy Act. Gave California residents new rights over their personal information collected by businesses.
+
+5. 2024 — EU AI Act: First comprehensive AI regulation. Classified AI systems by risk level. Set rules for transparency and accountability.</pre>
+  </div>
+</div>
+
+<!-- Track 3 -->
+<div class="tab-panel" id="track3">
+  <h3>Concept / Variable Explorer</h3>
+  <p>Best for: STEM, Medicine, or anyone working with numbers and variables that affect an outcome.</p>
+
+  <p class="label">Prompt Template</p>
+  <div class="prompt-box">
+    <button class="copy-btn" data-target="t3-prompt">Copy</button>
+    <pre id="t3-prompt">Build an interactive compound interest calculator. Add three sliders: one for initial investment (1000 to 50000), one for annual interest rate (1% to 15%), and one for time period (1 to 30 years). Calculate and display the final amount. Show a simple bar chart or growth line that updates when sliders change. Use a clean, professional design.</pre>
+  </div>
+
+  <p class="label">Dummy Content</p>
+  <div class="dummy-data">
+    <button class="copy-btn" data-target="t3-data" style="top:0.5rem;right:0.5rem;">Copy</button>
+    <pre id="t3-data">Use these default values and labels:
+
+Title: "Compound Interest Explorer"
+Subtitle: "See how small changes in rate or time create big differences"
+
+Default values:
+- Initial investment: $10,000
+- Annual interest rate: 5%
+- Time period: 20 years
+
+Formula: Final = Principal × (1 + rate)^years
+
+Show the final amount as a large number.
+Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
+  </div>
+</div>
+
+<!-- ====== Prompt Cheat Sheet ====== -->
+<div class="cheat">
+  <h2>Prompt Cheat Sheet</h2>
+  <p>Structure your prompts with these four elements:</p>
+  <div class="tip-grid">
+    <div class="tip">
+      <strong>Purpose</strong>
+      <p>&ldquo;for a university presentation&rdquo;</p>
+    </div>
+    <div class="tip">
+      <strong>Elements</strong>
+      <p>&ldquo;6 cards with title, summary, and tags&rdquo;</p>
+    </div>
+    <div class="tip">
+      <strong>Behavior</strong>
+      <p>&ldquo;when clicked, show a detail view&rdquo;</p>
+    </div>
+    <div class="tip">
+      <strong>Style</strong>
+      <p>&ldquo;clean, professional design&rdquo;</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1.25rem;">Common Refinement Prompts</h3>
+  <div class="tip-grid">
+    <div class="tip">
+      <strong>Fix a bug</strong>
+      <p>&ldquo;The filter button does not work. Please fix it. Keep everything else.&rdquo;</p>
+    </div>
+    <div class="tip">
+      <strong>Change style</strong>
+      <p>&ldquo;Make the text larger and change the colors to blue and grey.&rdquo;</p>
+    </div>
+    <div class="tip">
+      <strong>Add a feature</strong>
+      <p>&ldquo;Add a search box at the top that filters cards by title.&rdquo;</p>
+    </div>
+    <div class="tip">
+      <strong>Simplify</strong>
+      <p>&ldquo;Remove the animations. Keep the layout clean and simple.&rdquo;</p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== Scripts ====== -->
+<script>
+/* Tab switching */
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    var panel = document.getElementById(btn.dataset.tab);
+    if (panel) panel.classList.add('active');
+  });
+});
+
+/* Copy buttons */
+document.querySelectorAll('.copy-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var target = document.getElementById(btn.dataset.target);
+    if (!target) return;
+    navigator.clipboard.writeText(target.textContent.trim()).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+</script>
+
+</body>
+</html>
