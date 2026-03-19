@@ -128,9 +128,9 @@ a { color: var(--text-accent); text-decoration: none; }
 .slide .fade-content {
   transition: opacity var(--dur-slow) var(--ease-out);
 }
+.slide.active .fade-content { opacity: 1; }
 .slide.morph-out .fade-content,
 .slide.entering .fade-content { opacity: 0; }
-.slide.active .fade-content { opacity: 1; }
 
 /* --- Slide Variants --- */
 .slide--center .slide-inner {
