@@ -101,7 +101,7 @@ class SlideEngine {
     const to = this.slides[index];
 
     if (direction === 'none') {
-      this.slides.forEach(s => s.classList.remove('active', 'morph-out', 'entering'));
+      this.slides.forEach(s => s.classList.remove('active', 'fade-out'));
       to.classList.add('active');
       this.current = index;
       this.updateUI();
@@ -110,68 +110,19 @@ class SlideEngine {
 
     this.transitioning = true;
 
-    const morphSnap = this.captureMorph(from);
+    from.classList.remove('active');
+    from.classList.add('fade-out');
 
-    from.classList.add('morph-out');
-
-    to.classList.add('entering');
     to.classList.add('active');
 
-    void to.offsetHeight;
-
-    this.animateMorph(morphSnap, to);
-
-    requestAnimationFrame(() => {
-      to.classList.remove('entering');
-    });
-
-    const dur = 650;
+    const dur = 600;
     setTimeout(() => {
-      from.classList.remove('active', 'morph-out');
+      from.classList.remove('fade-out');
       this.transitioning = false;
     }, dur);
 
     this.current = index;
     this.updateUI();
-  }
-
-  /* ---- FLIP Morph System ---- */
-
-  captureMorph(slide) {
-    const snap = {};
-    slide.querySelectorAll('[data-morph-id]').forEach(el => {
-      snap[el.dataset.morphId] = el.getBoundingClientRect();
-    });
-    return snap;
-  }
-
-  animateMorph(fromSnap, toSlide) {
-    toSlide.querySelectorAll('[data-morph-id]').forEach(el => {
-      const id = el.dataset.morphId;
-      const fromRect = fromSnap[id];
-      if (!fromRect) return;
-
-      const toRect = el.getBoundingClientRect();
-      const dx = fromRect.left - toRect.left;
-      const dy = fromRect.top - toRect.top;
-      const sx = fromRect.width / (toRect.width || 1);
-      const sy = fromRect.height / (toRect.height || 1);
-
-      el.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
-      el.style.transformOrigin = 'top left';
-
-      requestAnimationFrame(() => {
-        el.classList.add('morph-animating');
-        el.style.transform = '';
-
-        const done = () => {
-          el.classList.remove('morph-animating');
-          el.style.transformOrigin = '';
-        };
-        el.addEventListener('transitionend', done, { once: true });
-        setTimeout(done, 900);
-      });
-    });
   }
 
   /* ---- Fullscreen ---- */

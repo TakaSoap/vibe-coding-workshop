@@ -58,7 +58,6 @@
   --dur-fast: 150ms;
   --dur-normal: 300ms;
   --dur-slow: 600ms;
-  --dur-morph: 800ms;
 }
 
 /* --- Reset --- */
@@ -112,25 +111,27 @@ a { color: var(--text-accent); text-decoration: none; }
   z-index: 0;
 }
 
-.slide.active {
-  opacity: 1; visibility: visible;
-  pointer-events: auto; z-index: 1;
+.slide.active,
+.slide.fade-out {
+  visibility: visible;
+  z-index: 1;
+  transition: opacity var(--dur-slow) var(--ease-out);
 }
 
-.slide.morph-out { z-index: 2; pointer-events: none; }
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slide.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .slide-inner {
   width: 100%; max-width: var(--content-max);
   position: relative;
 }
-
-/* Non-morph content fades during transition */
-.slide .fade-content {
-  transition: opacity var(--dur-slow) var(--ease-out);
-}
-.slide.active .fade-content { opacity: 1; }
-.slide.morph-out .fade-content,
-.slide.entering .fade-content { opacity: 0; }
 
 /* --- Slide Variants --- */
 .slide--center .slide-inner {
@@ -361,15 +362,6 @@ blockquote {
 }
 .music-player button:hover { color: var(--text-primary); }
 
-/* =============================================
-   Morph Elements
-   ============================================= */
-[data-morph-id] {
-  will-change: transform;
-}
-.morph-animating {
-  transition: transform var(--dur-morph) var(--ease-out);
-}
 
 /* =============================================
    Navigation UI
