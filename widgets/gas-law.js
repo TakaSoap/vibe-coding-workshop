@@ -22,13 +22,23 @@
   root.style.flexDirection = 'column';
   root.style.gap = '12px';
 
-  var title = document.createElement('p');
-  title.style.cssText = 'font-family:var(--font-display);font-size:var(--text-sm);color:var(--text-tertiary);text-align:center;';
-  title.textContent = 'Ideal Gas Law:  PV = nRT';
-  root.appendChild(title);
+  var eqnDiv = document.createElement('div');
+  eqnDiv.style.cssText = 'text-align:center;font-size:1.5em;';
+  root.appendChild(eqnDiv);
+  if (window.katex) {
+    katex.render('PV = nRT', eqnDiv, { displayMode: true, throwOnError: false });
+  } else {
+    eqnDiv.style.cssText += 'font-family:"Times New Roman",Georgia,serif;font-style:italic;color:var(--text-primary);padding:8px 0;font-size:var(--text-2xl);';
+    eqnDiv.textContent = 'PV = nRT';
+  }
+
+  var eqnLabel = document.createElement('p');
+  eqnLabel.style.cssText = 'font-family:var(--font-display);font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;margin-top:-8px;';
+  eqnLabel.textContent = 'Ideal Gas Law';
+  root.appendChild(eqnLabel);
 
   var canvas = document.createElement('canvas');
-  canvas.style.cssText = 'width:100%;border-radius:8px;background:#12131a;';
+  canvas.style.cssText = 'width:100%;border-radius:8px;background:var(--bg-base);';
   root.appendChild(canvas);
 
   var controls = document.createElement('div');
@@ -67,8 +77,8 @@
     return input;
   }
 
-  makeSlider('Temperature', 200, 600, 10, T, 'K', function (v) { T = v; resetSpeeds(); });
-  makeSlider('Volume', 1, 10, 0.5, V, 'L', function (v) { V = v; });
+  makeSlider('Temperature', 200, 600, 1, T, 'K', function (v) { T = v; resetSpeeds(); });
+  makeSlider('Volume', 1, 10, 0.1, V, 'L', function (v) { V = v; });
 
   var pressureRow = document.createElement('div');
   pressureRow.style.cssText = 'display:flex;align-items:center;gap:10px;justify-content:center;margin-top:4px;';
@@ -92,7 +102,7 @@
   }
 
   function baseSpeed() {
-    return 1.2 * Math.sqrt(T / 300);
+    return 1.2 * Math.pow(T / 300, 1.5);
   }
 
   function initParticles() {
@@ -125,6 +135,14 @@
 
   initParticles();
 
+  function pressureColor(P) {
+    var Pmin = (n * R * 200) / 10;
+    var Pmax = (n * R * 600) / 1;
+    var t = Math.max(0, Math.min(1, (P - Pmin) / (Pmax - Pmin)));
+    var hue = 180 * (1 - t);
+    return 'hsl(' + hue + ', 85%, 55%)';
+  }
+
   /* ---- Render loop ---- */
 
   function resize() {
@@ -143,9 +161,9 @@
     var h = canvas.height / dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
     ctx.clearRect(0, 0, w, h);
 
-    // Container walls — width proportional to Volume
     var cPad = 20;
     var maxCW = w - cPad * 2;
     var cW = maxCW * (V / 10);
@@ -153,9 +171,15 @@
     var cX = (w - cW) / 2;
     var cY = cPad;
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx.lineWidth = 1.5;
+    var P = (n * R * T) / V;
+    var pColor = pressureColor(P);
+    ctx.save();
+    ctx.strokeStyle = pColor;
+    ctx.lineWidth = 2;
+    ctx.shadowColor = pColor;
+    ctx.shadowBlur = 8;
     ctx.strokeRect(cX, cY, cW, cH);
+    ctx.restore();
 
     // Update & draw particles
     var hue = tempHue();
@@ -188,9 +212,8 @@
       ctx.fill();
     }
 
-    // Pressure
-    var P = (n * R * T) / V;
     pressureVal.textContent = P.toFixed(1) + ' atm';
+    pressureVal.style.color = pColor;
 
     animId = requestAnimationFrame(draw);
   }

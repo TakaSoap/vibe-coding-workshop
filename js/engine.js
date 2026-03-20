@@ -1,6 +1,6 @@
 /**
  * Slide presentation engine.
- * Handles navigation, morph transitions, fullscreen, and UI.
+ * Handles navigation, fade-content stagger, fullscreen, theme, and UI.
  */
 
 class SlideEngine {
@@ -19,15 +19,20 @@ class SlideEngine {
     this.total = this.slides.length;
     if (!this.total) return;
 
-    this.progressBar = document.querySelector('.progress-bar');
     this.counterCurrent = document.getElementById('counter-current');
     this.counterTotal = document.getElementById('counter-total');
     this.dotsContainer = document.querySelector('.nav-dots');
     this.fsBtn = document.getElementById('fs-btn');
+    this.prevBtn = document.getElementById('nav-prev');
+    this.nextBtn = document.getElementById('nav-next');
+
+    this._navIdleTimer = null;
+    this._navIdleDelay = 2500;
 
     this.renderDots();
     this.goTo(0, 'none');
     this.bind();
+    this._showNav();
   }
 
   /* ---- Navigation ---- */
@@ -35,12 +40,28 @@ class SlideEngine {
   bind() {
     document.addEventListener('keydown', e => this.onKey(e));
     document.addEventListener('wheel', e => this.onWheel(e), { passive: false });
-    document.addEventListener('click', e => this.onClick(e));
     document.addEventListener('touchstart', e => { this.touchStartY = e.touches[0].clientY; }, { passive: true });
     document.addEventListener('touchend', e => this.onTouchEnd(e));
 
-    if (this.fsBtn) this.fsBtn.addEventListener('click', () => this.toggleFullscreen());
+    document.addEventListener('mousemove', () => this._showNav());
+    document.addEventListener('mouseleave', () => this._hideNav());
+
+    if (this.prevBtn) this.prevBtn.addEventListener('click', e => { e.stopPropagation(); this.prev(); });
+    if (this.nextBtn) this.nextBtn.addEventListener('click', e => { e.stopPropagation(); this.next(); });
+
+    if (this.fsBtn) this.fsBtn.addEventListener('click', e => { e.stopPropagation(); this.toggleFullscreen(); });
     document.addEventListener('fullscreenchange', () => this.onFullscreenChange());
+  }
+
+  _showNav() {
+    document.body.classList.add('nav-visible');
+    clearTimeout(this._navIdleTimer);
+    this._navIdleTimer = setTimeout(() => this._hideNav(), this._navIdleDelay);
+  }
+
+  _hideNav() {
+    clearTimeout(this._navIdleTimer);
+    document.body.classList.remove('nav-visible');
   }
 
   isInputFocused() {
@@ -76,20 +97,14 @@ class SlideEngine {
     if (e.deltaY > 0) this.next(); else if (e.deltaY < 0) this.prev();
   }
 
-  onClick(e) {
-    if (this.isInteractive(e.target)) return;
-    if (e.target.closest('.slide-nav, .fs-btn, .fs-corner-zone')) return;
-    this.next();
-  }
-
   onTouchEnd(e) {
     const dy = this.touchStartY - e.changedTouches[0].clientY;
     if (Math.abs(dy) < 40) return;
     if (dy > 0) this.next(); else this.prev();
   }
 
-  next() { if (this.current < this.total - 1) this.goTo(this.current + 1, 'forward'); }
-  prev() { if (this.current > 0) this.goTo(this.current - 1, 'backward'); }
+  next() { if (this.current < this.total - 1) { this._showNav(); this.goTo(this.current + 1, 'forward'); } }
+  prev() { if (this.current > 0) { this._showNav(); this.goTo(this.current - 1, 'backward'); } }
 
   /* ---- Transitions ---- */
 
@@ -97,6 +112,7 @@ class SlideEngine {
     if (index < 0 || index >= this.total) return;
     if (this.transitioning && direction !== 'none') return;
 
+    const prevSlide = this.current;
     const from = this.slides[this.current];
     const to = this.slides[index];
 
@@ -105,15 +121,19 @@ class SlideEngine {
       to.classList.add('active');
       this.current = index;
       this.updateUI();
+      this._triggerFadeContent(to);
+      this._onSlideChange(prevSlide, index);
       return;
     }
 
     this.transitioning = true;
 
+    this._resetFadeContent(from);
     from.classList.remove('active');
     from.classList.add('fade-out');
 
     to.classList.add('active');
+    this._triggerFadeContent(to);
 
     const dur = 600;
     setTimeout(() => {
@@ -123,6 +143,43 @@ class SlideEngine {
 
     this.current = index;
     this.updateUI();
+    this._onSlideChange(prevSlide, index);
+  }
+
+  /* ---- Fade-content stagger ---- */
+
+  _triggerFadeContent(slide) {
+    const items = slide.querySelectorAll('.fade-content');
+    items.forEach((el, i) => {
+      el.classList.remove('fc-visible');
+      el.style.transitionDelay = '';
+    });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        items.forEach((el, i) => {
+          el.style.transitionDelay = (i * 120) + 'ms';
+          el.classList.add('fc-visible');
+        });
+      });
+    });
+  }
+
+  _resetFadeContent(slide) {
+    const items = slide.querySelectorAll('.fade-content');
+    items.forEach(el => {
+      el.classList.remove('fc-visible');
+      el.style.transitionDelay = '';
+    });
+  }
+
+  /* ---- Slide change hook ---- */
+
+  _onSlideChange(prevIndex, nextIndex) {
+    document.body.dataset.slide = nextIndex;
+
+    if (prevIndex === 0 && nextIndex !== 0 && window._musicFadeOut) {
+      window._musicFadeOut();
+    }
   }
 
   /* ---- Fullscreen ---- */
@@ -142,11 +199,6 @@ class SlideEngine {
   /* ---- UI Updates ---- */
 
   updateUI() {
-    if (this.progressBar) {
-      const pct = this.total > 1 ? (this.current / (this.total - 1)) * 100 : 0;
-      this.progressBar.style.width = pct + '%';
-    }
-
     if (this.counterCurrent) this.counterCurrent.textContent = this.current + 1;
     if (this.counterTotal) this.counterTotal.textContent = this.total;
 
@@ -155,6 +207,9 @@ class SlideEngine {
         dot.classList.toggle('active', i === this.current);
       });
     }
+
+    if (this.prevBtn) this.prevBtn.classList.toggle('disabled', this.current === 0);
+    if (this.nextBtn) this.nextBtn.classList.toggle('disabled', this.current === this.total - 1);
   }
 
   renderDots() {

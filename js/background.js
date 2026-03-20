@@ -1,6 +1,6 @@
 /**
  * Aurora gradient background with faint grid and traveling highlights.
- * Renders to a full-viewport canvas behind all slide content.
+ * Supports dark/light themes and dynamic intensity per slide.
  */
 
 class AuroraBackground {
@@ -9,10 +9,12 @@ class AuroraBackground {
     this.ctx = canvas.getContext('2d');
     this.width = 0;
     this.height = 0;
-    this.blobs = [];
     this.pulses = [];
     this.gridSize = 55;
-    this.maxPulses = 6;
+    this.maxPulses = 10;
+
+    this.intensity = 0.6;
+    this.targetIntensity = 0.6;
 
     this.resize();
     window.addEventListener('resize', () => this.resize());
@@ -30,48 +32,68 @@ class AuroraBackground {
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  animate(time) {
-    const ctx = this.ctx;
-    const w = this.width;
-    const h = this.height;
+  isLightTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light';
+  }
 
-    ctx.fillStyle = '#16171d';
+  getTargetIntensity() {
+    var slide = parseInt(document.body.dataset.slide, 10) || 0;
+    if (slide <= 1) return 1.0;
+    if (slide === 14) return 0.8;
+    if (document.body.getAttribute('data-bg-intensity') === 'high') return 1.0;
+    return 0.6;
+  }
+
+  animate(time) {
+    var ctx = this.ctx;
+    var w = this.width;
+    var h = this.height;
+
+    this.targetIntensity = this.getTargetIntensity();
+    this.intensity += (this.targetIntensity - this.intensity) * 0.02;
+
+    var light = this.isLightTheme();
+    ctx.fillStyle = light ? '#f5f6fa' : '#16171d';
     ctx.fillRect(0, 0, w, h);
 
-    this.drawAurora(ctx, w, h, time);
-    this.drawGrid(ctx, w, h);
-    this.updateAndDrawPulses(ctx, w, h, time);
+    this.drawAurora(ctx, w, h, time, light);
+    this.drawGrid(ctx, w, h, light);
+    this.updateAndDrawPulses(ctx, w, h, time, light);
 
     requestAnimationFrame(t => this.animate(t));
   }
 
-  /* --- Aurora: large soft color blobs that drift slowly --- */
-  drawAurora(ctx, w, h, time) {
-    const t = time * 0.0001; // very slow
+  drawAurora(ctx, w, h, time, light) {
+    var t = time * 0.0001;
+    var baseAlpha = light ? 0.28 : 0.16;
+    var alpha = baseAlpha * this.intensity;
+    var fadeAlpha = alpha * 0.45;
 
-    const blobs = [
+    var blobs = [
       { cx: 0.30 + Math.sin(t * 0.7) * 0.12,
         cy: 0.70 + Math.cos(t * 0.5) * 0.08,
-        r: 0.45, color: [0, 196, 204] },
+        r: 0.50, color: [0, 196, 204], lightColor: [160, 230, 235] },
       { cx: 0.72 + Math.sin(t * 0.5 + 2) * 0.10,
         cy: 0.45 + Math.cos(t * 0.6 + 1) * 0.10,
-        r: 0.40, color: [111, 0, 255] },
+        r: 0.45, color: [111, 0, 255], lightColor: [195, 160, 255] },
       { cx: 0.50 + Math.sin(t * 0.4 + 4) * 0.14,
         cy: 0.25 + Math.cos(t * 0.3 + 3) * 0.08,
-        r: 0.35, color: [60, 90, 255] },
+        r: 0.40, color: [60, 90, 255], lightColor: [165, 185, 255] },
     ];
 
-    ctx.globalCompositeOperation = 'screen';
-    for (const b of blobs) {
-      const x = b.cx * w;
-      const y = b.cy * h;
-      const r = b.r * Math.max(w, h);
-      const [cr, cg, cb] = b.color;
+    ctx.globalCompositeOperation = light ? 'darken' : 'screen';
+    for (var i = 0; i < blobs.length; i++) {
+      var b = blobs[i];
+      var x = b.cx * w;
+      var y = b.cy * h;
+      var r = b.r * Math.max(w, h);
+      var c = light ? b.lightColor : b.color;
+      var cr = c[0], cg = c[1], cb = c[2];
 
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
-      grad.addColorStop(0,   `rgba(${cr},${cg},${cb}, 0.07)`);
-      grad.addColorStop(0.4, `rgba(${cr},${cg},${cb}, 0.03)`);
-      grad.addColorStop(1,   `rgba(${cr},${cg},${cb}, 0)`);
+      var grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+      grad.addColorStop(0,   'rgba(' + cr + ',' + cg + ',' + cb + ',' + alpha + ')');
+      grad.addColorStop(0.4, 'rgba(' + cr + ',' + cg + ',' + cb + ',' + fadeAlpha + ')');
+      grad.addColorStop(1,   'rgba(' + cr + ',' + cg + ',' + cb + ',0)');
 
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
@@ -79,31 +101,33 @@ class AuroraBackground {
     ctx.globalCompositeOperation = 'source-over';
   }
 
-  /* --- Grid: faint gray-white lines --- */
-  drawGrid(ctx, w, h) {
-    const g = this.gridSize;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+  drawGrid(ctx, w, h, light) {
+    var g = this.gridSize;
+    var gridAlpha = (light ? 0.07 : 0.055) * this.intensity;
+    ctx.strokeStyle = light
+      ? 'rgba(0, 0, 0,' + gridAlpha + ')'
+      : 'rgba(255, 255, 255,' + gridAlpha + ')';
     ctx.lineWidth = 0.5;
     ctx.beginPath();
-    for (let x = g; x < w; x += g) {
+    for (var x = g; x < w; x += g) {
       ctx.moveTo(x, 0);
       ctx.lineTo(x, h);
     }
-    for (let y = g; y < h; y += g) {
+    for (var y = g; y < h; y += g) {
       ctx.moveTo(0, y);
       ctx.lineTo(w, y);
     }
     ctx.stroke();
   }
 
-  /* --- Pulses: dim highlights traveling along grid lines --- */
-  updateAndDrawPulses(ctx, w, h, time) {
-    if (this.pulses.length < this.maxPulses && Math.random() < 0.008) {
+  updateAndDrawPulses(ctx, w, h, time, light) {
+    var spawnRate = 0.008 + 0.012 * this.intensity;
+    if (this.pulses.length < this.maxPulses && Math.random() < spawnRate) {
       this.spawnPulse(w, h);
     }
 
-    for (let i = this.pulses.length - 1; i >= 0; i--) {
-      const p = this.pulses[i];
+    for (var i = this.pulses.length - 1; i >= 0; i--) {
+      var p = this.pulses[i];
       p.t += p.speed;
 
       if (p.t > 1) {
@@ -111,30 +135,33 @@ class AuroraBackground {
         continue;
       }
 
-      const life = Math.sin(p.t * Math.PI);
-      const alpha = 0.12 * life;
-      const len = 80;
+      var life = Math.sin(p.t * Math.PI);
+      var alpha = 0.22 * life * this.intensity;
+      var len = 120;
+      var colorStr = light
+        ? 'rgba(0,0,0,'
+        : 'rgba(255,255,255,';
 
       ctx.lineWidth = 1;
 
       if (p.horiz) {
-        const x = p.t * (w + len * 2) - len;
-        const grad = ctx.createLinearGradient(x - len / 2, 0, x + len / 2, 0);
-        grad.addColorStop(0, `rgba(255,255,255,0)`);
-        grad.addColorStop(0.5, `rgba(255,255,255,${alpha})`);
-        grad.addColorStop(1, `rgba(255,255,255,0)`);
+        var x = p.t * (w + len * 2) - len;
+        var grad = ctx.createLinearGradient(x - len / 2, 0, x + len / 2, 0);
+        grad.addColorStop(0, colorStr + '0)');
+        grad.addColorStop(0.5, colorStr + alpha + ')');
+        grad.addColorStop(1, colorStr + '0)');
         ctx.strokeStyle = grad;
         ctx.beginPath();
         ctx.moveTo(x - len / 2, p.pos);
         ctx.lineTo(x + len / 2, p.pos);
         ctx.stroke();
       } else {
-        const y = p.t * (h + len * 2) - len;
-        const grad = ctx.createLinearGradient(0, y - len / 2, 0, y + len / 2);
-        grad.addColorStop(0, `rgba(255,255,255,0)`);
-        grad.addColorStop(0.5, `rgba(255,255,255,${alpha})`);
-        grad.addColorStop(1, `rgba(255,255,255,0)`);
-        ctx.strokeStyle = grad;
+        var y = p.t * (h + len * 2) - len;
+        var grad2 = ctx.createLinearGradient(0, y - len / 2, 0, y + len / 2);
+        grad2.addColorStop(0, colorStr + '0)');
+        grad2.addColorStop(0.5, colorStr + alpha + ')');
+        grad2.addColorStop(1, colorStr + '0)');
+        ctx.strokeStyle = grad2;
         ctx.beginPath();
         ctx.moveTo(p.pos, y - len / 2);
         ctx.lineTo(p.pos, y + len / 2);
@@ -144,22 +171,21 @@ class AuroraBackground {
   }
 
   spawnPulse(w, h) {
-    const horiz = Math.random() > 0.5;
-    const gridCount = horiz
+    var horiz = Math.random() > 0.5;
+    var gridCount = horiz
       ? Math.floor(h / this.gridSize)
       : Math.floor(w / this.gridSize);
 
     this.pulses.push({
-      horiz,
+      horiz: horiz,
       pos: (Math.floor(Math.random() * gridCount) + 1) * this.gridSize,
       t: 0,
-      speed: 0.002 + Math.random() * 0.002, // 4–8 seconds to cross
+      speed: 0.002 + Math.random() * 0.002,
     });
   }
 }
 
-// Auto-init when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('bg-canvas');
+document.addEventListener('DOMContentLoaded', function() {
+  var canvas = document.getElementById('bg-canvas');
   if (canvas) new AuroraBackground(canvas);
 });

@@ -132,7 +132,17 @@
       .tabs { flex-wrap: wrap; }
     }
   </style>
-</head>
+  <script>
+  (function () {
+    var p = location.port;
+    if (!p || p === '80' || p === '443') return;
+    var s = document.createElement('script');
+    s.src = '//' + location.hostname + ':' + p + '/livereload.js?port=' + p;
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+  </script>
+</head >
 <body>
 
 <div class="header">
