@@ -6,11 +6,11 @@
   var root = document.getElementById('edu-widget-container');
   if (!root) return;
 
-  var N_PARTICLES = 50;
-  var R = 0.0821; // L·atm / (mol·K)
-  var n = 1;      // mol (constant)
-  var T = 350;    // K
-  var V = 5;      // L
+  var PARTICLES_PER_MOL = 40;
+  var R = 0.0821;
+  var n = 1;
+  var T = 350;
+  var V = 5;
   var particles = [];
   var animId = null;
 
@@ -20,7 +20,7 @@
   root.style.padding = 'var(--space-md)';
   root.style.display = 'flex';
   root.style.flexDirection = 'column';
-  root.style.gap = '12px';
+  root.style.gap = '10px';
 
   var eqnDiv = document.createElement('div');
   eqnDiv.style.cssText = 'text-align:center;font-size:1.5em;';
@@ -37,12 +37,25 @@
   eqnLabel.textContent = 'Ideal Gas Law';
   root.appendChild(eqnLabel);
 
+  var liveEqn = document.createElement('div');
+  liveEqn.style.cssText = 'text-align:center;font-family:var(--font-display);font-size:var(--text-xs);color:var(--text-tertiary);letter-spacing:0.01em;margin-top:-2px;';
+  root.appendChild(liveEqn);
+
+  var lePval = document.createElement('span');
+  lePval.style.fontWeight = '600';
+  var leMiddle = document.createTextNode('');
+  var leResult = document.createElement('span');
+  leResult.style.cssText = 'color:var(--text-primary);font-weight:600;';
+  liveEqn.appendChild(lePval);
+  liveEqn.appendChild(leMiddle);
+  liveEqn.appendChild(leResult);
+
   var canvas = document.createElement('canvas');
   canvas.style.cssText = 'width:100%;border-radius:8px;background:var(--bg-base);';
   root.appendChild(canvas);
 
   var controls = document.createElement('div');
-  controls.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
+  controls.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
   root.appendChild(controls);
 
   function makeSlider(label, min, max, step, value, unit, onChange) {
@@ -65,12 +78,13 @@
 
     var val = document.createElement('span');
     val.style.cssText = 'font-family:var(--font-display);font-size:var(--text-xs);color:var(--text-primary);width:80px;';
-    val.textContent = value + ' ' + unit;
+    val.textContent = (step < 1 ? parseFloat(value).toFixed(1) : value) + ' ' + unit;
     row.appendChild(val);
 
     input.addEventListener('input', function () {
-      val.textContent = input.value + ' ' + unit;
-      onChange(parseFloat(input.value));
+      var v = parseFloat(input.value);
+      val.textContent = (step < 1 ? v.toFixed(1) : v) + ' ' + unit;
+      onChange(v);
     });
 
     controls.appendChild(row);
@@ -79,6 +93,7 @@
 
   makeSlider('Temperature', 200, 600, 1, T, 'K', function (v) { T = v; resetSpeeds(); });
   makeSlider('Volume', 1, 10, 0.1, V, 'L', function (v) { V = v; });
+  makeSlider('Moles (n)', 1, 5, 1, n, 'mol', function (v) { n = v; syncParticles(); });
 
   var pressureRow = document.createElement('div');
   pressureRow.style.cssText = 'display:flex;align-items:center;gap:10px;justify-content:center;margin-top:4px;';
@@ -94,10 +109,14 @@
 
   controls.appendChild(pressureRow);
 
+  var hint = document.createElement('p');
+  hint.style.cssText = 'font-family:var(--font-display);font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;opacity:0.45;margin-top:2px;font-style:italic;';
+  hint.textContent = 'Try: halve the volume \u2014 what happens to pressure?';
+  root.appendChild(hint);
+
   /* ---- Particles ---- */
 
   function tempHue() {
-    // 200K → hue 220 (blue), 400K → 180 (teal), 600K → 20 (orange)
     return 220 - ((T - 200) / 400) * 200;
   }
 
@@ -105,17 +124,27 @@
     return 1.2 * Math.pow(T / 300, 1.5);
   }
 
+  function makeParticle() {
+    var p = {
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2,
+    };
+    var spd = baseSpeed() * (0.6 + Math.random() * 0.8);
+    var mag = Math.sqrt(p.vx * p.vx + p.vy * p.vy) || 1;
+    p.vx = (p.vx / mag) * spd;
+    p.vy = (p.vy / mag) * spd;
+    return p;
+  }
+
   function initParticles() {
     particles = [];
-    for (var i = 0; i < N_PARTICLES; i++) {
-      particles.push({
-        x: Math.random(),
-        y: Math.random(),
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-      });
-    }
-    normalizeSpeeds();
+    for (var i = 0; i < PARTICLES_PER_MOL * n; i++) particles.push(makeParticle());
+  }
+
+  function syncParticles() {
+    var target = PARTICLES_PER_MOL * n;
+    while (particles.length < target) particles.push(makeParticle());
+    while (particles.length > target) particles.pop();
   }
 
   function normalizeSpeeds() {
@@ -129,21 +158,20 @@
     }
   }
 
-  function resetSpeeds() {
-    normalizeSpeeds();
-  }
+  function resetSpeeds() { normalizeSpeeds(); }
 
   initParticles();
 
   function pressureColor(P) {
-    var Pmin = (n * R * 200) / 10;
-    var Pmax = (n * R * 600) / 1;
-    var t = Math.max(0, Math.min(1, (P - Pmin) / (Pmax - Pmin)));
+    var t = Math.max(0, Math.min(1, (P - 2) / 28));
+    t = Math.sqrt(t);
     var hue = 180 * (1 - t);
     return 'hsl(' + hue + ', 85%, 55%)';
   }
 
   /* ---- Render loop ---- */
+
+  var _lastEqKey = '';
 
   function resize() {
     var dpr = window.devicePixelRatio || 1;
@@ -167,12 +195,13 @@
     var cPad = 20;
     var maxCW = w - cPad * 2;
     var cW = maxCW * (V / 10);
-    var cH = h - cPad * 2;
+    var cH = h - cPad * 2 - 16;
     var cX = (w - cW) / 2;
     var cY = cPad;
 
     var P = (n * R * T) / V;
     var pColor = pressureColor(P);
+
     ctx.save();
     ctx.strokeStyle = pColor;
     ctx.lineWidth = 2;
@@ -181,9 +210,12 @@
     ctx.strokeRect(cX, cY, cW, cH);
     ctx.restore();
 
-    // Update & draw particles
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.fillStyle = isLight ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+    ctx.textAlign = 'center';
+    ctx.fillText('V = ' + V.toFixed(1) + ' L', w / 2, cY + cH + 14);
+
     var hue = tempHue();
-    var spd = baseSpeed();
     var dt = 0.012;
 
     for (var i = 0; i < particles.length; i++) {
@@ -205,22 +237,33 @@
       ctx.fillStyle = 'hsla(' + hue + ', 80%, 60%, 0.9)';
       ctx.fill();
 
-      // glow
       ctx.beginPath();
       ctx.arc(px, py, radius * 2.5, 0, Math.PI * 2);
       ctx.fillStyle = 'hsla(' + hue + ', 80%, 60%, 0.15)';
       ctx.fill();
     }
 
-    pressureVal.textContent = P.toFixed(1) + ' atm';
-    pressureVal.style.color = pColor;
+    var eqKey = n + '|' + T + '|' + V.toFixed(1);
+    if (eqKey !== _lastEqKey) {
+      _lastEqKey = eqKey;
+      pressureVal.textContent = P.toFixed(1) + ' atm';
+      pressureVal.style.color = pColor;
+
+      var nrt = (n * R * T).toFixed(1);
+      lePval.textContent = P.toFixed(1);
+      lePval.style.color = pColor;
+      leMiddle.textContent =
+        ' \u00d7 ' + V.toFixed(1) +
+        '\u2002=\u2002' + n + ' \u00d7 0.0821 \u00d7 ' + T +
+        '\u2002=\u2002';
+      leResult.textContent = nrt;
+    }
 
     animId = requestAnimationFrame(draw);
   }
 
   draw();
 
-  // Pause when not visible to save resources
   var observer = new IntersectionObserver(function (entries) {
     if (entries[0].isIntersecting) {
       if (!animId) draw();
