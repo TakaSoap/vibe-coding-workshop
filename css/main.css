@@ -12,7 +12,7 @@
   --color-purple-dark: #5900cc;
   --color-blue: #3c64ff;
 
-  --font-display: 'Maple Mono NF CN', 'JetBrains Mono', monospace;
+  --font-display: 'Maple Mono NF CN', 'Maple Mono', 'JetBrains Mono', monospace;
   --font-body: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 
   --text-xs: clamp(0.75rem, 1vw, 0.875rem);
@@ -853,6 +853,134 @@ a.canva-code-pill:hover {
 }
 .track-card h3 { font-size: var(--text-xl); margin-bottom: var(--space-xs); }
 .track-card p { font-size: var(--text-sm); }
+
+/* Tool Spectrum (Slide 4) */
+.spectrum {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-sm);
+  max-width: 920px;
+  width: 100%;
+}
+.spectrum-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.spectrum-tier {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  transition: border-color var(--dur-normal);
+  width: 100%;
+}
+.spectrum-tier:hover { border-color: var(--border-strong); }
+.spectrum-col--active .spectrum-tier {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 20px rgba(0, 196, 204, 0.1);
+}
+.spectrum-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 36px;
+}
+.spectrum-logos img {
+  height: 28px !important;
+  width: auto !important;
+  max-height: 28px;
+  object-fit: contain;
+  display: block;
+  opacity: 0.85;
+  transition: opacity var(--dur-normal);
+}
+.spectrum-logos img[alt="Canva"] {
+  height: 36px !important;
+  max-height: 36px;
+}
+.spectrum-logos img[alt="Bolt.new"] {
+  height: 36px !important;
+  max-height: 36px;
+}
+[data-theme="dark"] .spectrum-logos img[alt="Bolt.new"],
+:root .spectrum-logos img[alt="Bolt.new"] {
+  filter: invert(1);
+}
+[data-theme="light"] .spectrum-logos img[alt="Bolt.new"] {
+  filter: none;
+}
+.spectrum-tier:hover .spectrum-logos img { opacity: 1; }
+.spectrum-names {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.4;
+}
+.spectrum-desc {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-align: center;
+  line-height: 1.6;
+}
+.spectrum-level {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2em 0.8em;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.spectrum-level--easy {
+  background: rgba(0, 196, 204, 0.15);
+  color: var(--color-teal-light);
+  border: 1px solid rgba(0, 196, 204, 0.3);
+}
+.spectrum-level--mid {
+  background: rgba(60, 100, 255, 0.12);
+  color: var(--color-blue);
+  border: 1px solid rgba(60, 100, 255, 0.25);
+}
+.spectrum-level--adv {
+  background: rgba(111, 0, 255, 0.10);
+  color: var(--color-purple-light);
+  border: 1px solid rgba(111, 0, 255, 0.25);
+}
+[data-theme="light"] .spectrum-level--easy { color: var(--color-teal-dark); }
+[data-theme="light"] .spectrum-level--mid { color: #2a4abf; }
+[data-theme="light"] .spectrum-level--adv { color: var(--color-purple-dark); }
+
+.spectrum-bar {
+  max-width: 920px;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-teal), var(--color-blue), var(--color-purple));
+  opacity: 0.5;
+}
+.spectrum-note {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-style: italic;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .spectrum {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}
 
 /* =============================================
    Fade-Content Staggered Entrance

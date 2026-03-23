@@ -17,6 +17,8 @@
   }
 
   var built = false;
+  var revealed = false;
+  var toggleMode = root.hasAttribute('data-toggle');
 
   revealBtn.addEventListener('click', function (e) {
     e.stopPropagation();
@@ -24,11 +26,27 @@
       buildWidget();
       built = true;
     }
-    intro.classList.add('collapsed');
-    setTimeout(function () {
+
+    if (toggleMode && revealed) {
+      root.classList.remove('revealed');
+      intro.style.display = '';
+      revealBtn.innerHTML = revealBtn.innerHTML.replace('Hide interactive', 'Make it interactive');
+      revealed = false;
+      return;
+    }
+
+    revealed = true;
+    if (toggleMode) {
       intro.style.display = 'none';
+      revealBtn.innerHTML = revealBtn.innerHTML.replace('Make it interactive', 'Hide interactive');
       root.classList.add('revealed');
-    }, 200);
+    } else {
+      intro.classList.add('collapsed');
+      setTimeout(function () {
+        intro.style.display = 'none';
+        root.classList.add('revealed');
+      }, 200);
+    }
   });
 
   var PARTICLES_PER_MOL = 40;

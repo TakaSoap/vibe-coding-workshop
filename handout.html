@@ -6,8 +6,12 @@
   <title>Handout — Vibe Coding with Canva Code</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/latin.css" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
   <script>
   (function () {
     var saved = localStorage.getItem('theme');
@@ -270,6 +274,31 @@
     .paper .compare-grid { max-width: 100%; }
     .paper .compare-list li { font-size: 0.85rem; }
 
+    /* Gas Law widget in handout */
+    .paper .widget-container {
+      min-height: 0;
+      border-radius: 10px;
+    }
+    .paper #edu-widget-container {
+      max-height: 0; min-height: 0; opacity: 0;
+      overflow: hidden; padding: 0; border: none;
+      transition: max-height 800ms cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 600ms 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                  padding 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .paper #edu-widget-container.revealed {
+      max-height: 700px; min-height: 0; opacity: 1;
+      padding: 1rem;
+      border: 1px solid var(--border-subtle);
+    }
+    .paper #gas-law-intro {
+      transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .paper #gas-law-intro.collapsed {
+      opacity: 0; transform: translateY(-10px); pointer-events: none;
+    }
+
     /* Footer quote */
     .footer-quote {
       background: var(--bg-card);
@@ -383,10 +412,32 @@
     </p>
   </section>
 
-  <!-- ===== The Enthusiastic Intern Rule ===== -->
+  <!-- ===== Live Demo: Ideal Gas Law ===== -->
   <section>
-    <h2>The &ldquo;Enthusiastic Intern&rdquo; Rule</h2>
-    <p>Think of Canva Code as a very eager but inexperienced assistant. It does brilliantly with clear, simple tasks &mdash; but struggles when you ask for too much at once.</p>
+    <h2>Live Demo: Ideal Gas Law</h2>
+    <p>During the workshop, we demonstrated how a static equation can become an interactive exploration tool. Try it yourself below.</p>
+
+    <div id="gas-law-intro" style="text-align:center;margin:1rem 0;">
+      <div id="gas-law-static-eq" style="font-size:1.6em;"></div>
+      <p class="label" style="margin-top:0.25rem;">Ideal Gas Law</p>
+      <p style="max-width:480px;margin:0.5rem auto 0;font-size:0.85rem;color:var(--text-tertiary);line-height:1.6;">
+        Pressure, volume, temperature, and the amount of gas are all related.<br>But how do students <em>feel</em> that relationship?
+      </p>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn btn--primary" id="gas-law-reveal-btn" style="margin:0 auto;display:inline-flex;font-size:0.85rem;padding:0.5em 1.2em;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+        Make it interactive
+      </button>
+    </div>
+
+    <div class="widget-container interactive" id="edu-widget-container" data-toggle style="max-width:100%;display:flex;align-items:center;justify-content:center;"></div>
+  </section>
+
+  <!-- ===== The Junior Intern Rule ===== -->
+  <section>
+    <h2>The &ldquo;Junior Intern&rdquo; Rule</h2>
+    <p>Think of Canva Code as a junior intern &mdash; fast, capable, but inexperienced. It does brilliantly with clear, simple tasks, but struggles when you ask for too much at once.</p>
     <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin:1rem 0;">
       <div class="card" style="flex:1;min-width:180px;text-align:center;">
         <p style="font-size:0.88rem;margin:0;"><strong>&ldquo;Build a 4-card comparison tool&rdquo;</strong></p>
@@ -677,6 +728,7 @@ document.querySelectorAll('.copy-btn').forEach(function(btn) {
   });
 });
 </script>
+<script src="widgets/gas-law.js" defer></script>
 
 </body>
 </html>
