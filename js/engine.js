@@ -30,7 +30,7 @@ class SlideEngine {
     this._navIdleDelay = 2500;
 
     this.renderDots();
-    this.goTo(0, 'none');
+    this.goTo(this._getHashSlide(), 'none');
     this.bind();
     this._showNav();
   }
@@ -172,10 +172,20 @@ class SlideEngine {
     });
   }
 
+  _getHashSlide() {
+    const m = location.hash.match(/^#(\d+)$/);
+    if (m) {
+      const n = parseInt(m[1], 10);
+      if (n >= 0 && n < this.total) return n;
+    }
+    return 0;
+  }
+
   /* ---- Slide change hook ---- */
 
   _onSlideChange(prevIndex, nextIndex) {
     document.body.dataset.slide = nextIndex;
+    history.replaceState(null, '', '#' + nextIndex);
 
     if (prevIndex === 0 && nextIndex !== 0 && window._musicFadeOut) {
       window._musicFadeOut();
