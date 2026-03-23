@@ -550,10 +550,9 @@ body.nav-visible .slide-nav {
   text-align: center;
 }
 
-/* Corner action buttons (fullscreen, theme toggle) */
+/* Corner action buttons (fullscreen, theme toggle, music) */
 .corner-btn {
-  position: fixed;
-  z-index: 50;
+  position: relative;
   width: 36px; height: 36px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 10px;
@@ -563,6 +562,7 @@ body.nav-visible .slide-nav {
   pointer-events: none;
   transition: opacity 0.4s var(--ease-out), background var(--dur-normal), color var(--dur-normal);
   border: none;
+  background: transparent;
 }
 body.nav-visible .corner-btn { opacity: 1; pointer-events: auto; }
 .corner-btn:hover {
@@ -570,42 +570,34 @@ body.nav-visible .corner-btn { opacity: 1; pointer-events: auto; }
   color: var(--text-primary);
 }
 
-.fs-btn { bottom: 1.5rem; right: 1.5rem; }
-.theme-btn { bottom: 1.5rem; right: 4.5rem; }
-
-body.is-fullscreen .corner-btn { opacity: 0; pointer-events: none; }
-body.is-fullscreen .fs-corner-zone:hover ~ .corner-btn,
-body.is-fullscreen .corner-btn:hover { opacity: 1; pointer-events: auto; }
-
-.fs-corner-zone {
-  position: fixed; bottom: 0; right: 0;
-  width: 120px; height: 80px;
-  z-index: 49;
-}
-
-/* Music button (visible only on Slide 0) */
-.music-btn {
-  position: fixed; bottom: 1.5rem;
+/* Corner button group (music, theme, fullscreen) */
+.corner-group {
+  position: fixed; bottom: 1rem; right: 1rem;
   z-index: 50;
-  width: 36px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  color: var(--nav-text);
-  cursor: pointer;
-  border: none;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s var(--ease-out), background var(--dur-normal), color var(--dur-normal);
+  display: flex; gap: 8px; align-items: center;
+  padding: 6px;
+  border-radius: 14px;
 }
-.music-btn:hover {
-  background: var(--nav-btn-hover);
-  color: var(--text-primary);
-}
+
+/* Music button — only appears on Slide 0 */
+.music-btn { order: -1; }
 .music-btn.playing { color: var(--color-teal); }
-body.nav-visible[data-slide="0"] .music-btn {
-  opacity: 1;
-  pointer-events: auto;
+body.nav-visible .corner-btn.music-btn { opacity: 0; pointer-events: none; }
+body.nav-visible[data-slide="0"] .corner-btn.music-btn { opacity: 1; pointer-events: auto; }
+
+/* Fullscreen: hide ALL corner buttons — must override nav-visible rules */
+body.is-fullscreen .corner-btn,
+body.is-fullscreen.nav-visible .corner-btn,
+body.is-fullscreen.nav-visible[data-slide="0"] .corner-btn.music-btn {
+  opacity: 0; pointer-events: none;
 }
+
+/* Fullscreen + group hover: show theme + fullscreen */
+body.is-fullscreen .corner-group:hover .corner-btn { opacity: 1; pointer-events: auto; }
+
+/* Fullscreen + group hover: music still hidden unless Slide 0 */
+body.is-fullscreen .corner-group:hover .corner-btn.music-btn { opacity: 0; pointer-events: none; }
+body.is-fullscreen[data-slide="0"] .corner-group:hover .corner-btn.music-btn { opacity: 1; pointer-events: auto; }
 
 /* HKUL Logo */
 .hkul-logo {

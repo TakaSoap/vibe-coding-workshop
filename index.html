@@ -1113,45 +1113,9 @@
     <!-- ============================================= -->
     <!-- Navigation UI                                 -->
     <!-- ============================================= -->
-    <!-- Music (moved from Slide 0 content to global nav area) -->
-    <button
-      class="music-btn glass-ui"
-      id="music-btn"
-      aria-label="Toggle music"
-      style="left: calc(50% - 160px)"
-    >
-      <svg
-        class="music-icon-play"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <polygon points="6 3 20 12 6 21 6 3" />
-      </svg>
-      <svg
-        class="music-icon-pause"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        style="display: none"
-      >
-        <line x1="6" y1="4" x2="6" y2="20" />
-        <line x1="18" y1="4" x2="18" y2="20" />
-      </svg>
-    </button>
     <audio id="bg-music" loop preload="none">
       <source
-        src="https://cdn.pixabay.com/audio/2024/11/28/audio_3e62a10498.mp3"
+        src="https://cdn.pixabay.com/download/audio/2026/01/18/audio_bc967d1a00.mp3"
         type="audio/mpeg"
       />
     </audio>
@@ -1212,7 +1176,11 @@
       class="hkul-logo hkul-logo--dark"
     />
 
-    <div class="fs-corner-zone"></div>
+    <div class="corner-group">
+    <button class="music-btn corner-btn glass-ui" id="music-btn" aria-label="Toggle music">
+      <svg class="music-icon-play" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+      <svg class="music-icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>
+    </button>
     <button
       class="corner-btn glass-ui theme-btn"
       id="theme-btn"
@@ -1269,6 +1237,7 @@
         />
       </svg>
     </button>
+    </div>
 
     <!-- ============================================= -->
     <!-- Scripts                                       -->
