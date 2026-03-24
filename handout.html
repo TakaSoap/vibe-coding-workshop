@@ -14,8 +14,15 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
   <script>
   (function () {
+    function systemTheme() {
+      try {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+          return 'light';
+      } catch (e) {}
+      return 'dark';
+    }
     var saved = localStorage.getItem('theme');
-    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    document.documentElement.setAttribute('data-theme', saved || systemTheme());
   })();
   </script>
   <script>
@@ -887,18 +894,29 @@ Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
 (function() {
   var btn = document.getElementById('theme-toggle');
   function applyUI() {
+    if (!btn) return;
     var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
     btn.querySelector('.theme-icon-dark').style.display = isDark ? '' : 'none';
     btn.querySelector('.theme-icon-light').style.display = isDark ? 'none' : '';
   }
   applyUI();
-  btn.addEventListener('click', function() {
-    var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    var next = isDark ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+  if (btn) {
+    btn.addEventListener('click', function() {
+      var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      var next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      applyUI();
+    });
+  }
+  var mq = window.matchMedia('(prefers-color-scheme: light)');
+  function syncFromSystem() {
+    if (localStorage.getItem('theme')) return;
+    document.documentElement.setAttribute('data-theme', mq.matches ? 'light' : 'dark');
     applyUI();
-  });
+  }
+  if (mq.addEventListener) mq.addEventListener('change', syncFromSystem);
+  else if (mq.addListener) mq.addListener(syncFromSystem);
 })();
 
 document.querySelectorAll('.tab-btn').forEach(function(btn) {
