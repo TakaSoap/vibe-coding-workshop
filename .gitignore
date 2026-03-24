@@ -1,5 +1,4 @@
 latest_reg_list.txt
-workshop_script_clean.md
-workshop_script_with_notes.md
+*.md
 .DS_Store
 agent-tools/
