@@ -104,6 +104,9 @@
       margin-bottom: 0;
       padding-bottom: 0;
     }
+    .paper section[id] {
+      scroll-margin-top: 0.8rem;
+    }
 
     /* Header */
     .handout-header {
@@ -125,6 +128,56 @@
       gap: 1.5rem;
       justify-content: center;
       flex-wrap: wrap;
+    }
+
+    /* Quick start */
+    .quickstart-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .quickstart-card {
+      padding: 0.95rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
+        var(--bg-card);
+      box-shadow: var(--shadow-sm);
+    }
+    .quickstart-card .label {
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+    .quickstart-card p {
+      margin: 0;
+      font-size: 0.84rem;
+      line-height: 1.7;
+    }
+    .quick-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .quick-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.45em 0.9em;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      transition: all 0.2s;
+    }
+    .quick-link:hover {
+      color: var(--text-primary);
+      border-color: rgba(0, 196, 204, 0.35);
+      transform: translateY(-1px);
     }
 
     /* Theme toggle */
@@ -202,19 +255,30 @@
     .tab-panel.active { display: block; }
 
     /* Prompt box */
-    .prompt-box {
+    .prompt-box,
+    .dummy-data {
       background: var(--bg-card);
       border: 1px solid var(--border-default);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 1rem;
       position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+    .prompt-box {
       margin-bottom: 0.75rem;
     }
-    .prompt-box pre {
-      font-family: var(--font-display); font-size: 0.8rem;
-      color: var(--text-secondary); white-space: pre-wrap; line-height: 1.7;
+    .prompt-box pre,
+    .dummy-data pre {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      white-space: pre-wrap;
+      line-height: 1.72;
       margin: 0;
+      display: block;
+      padding-right: 4.3rem;
+      min-height: 1.7rem;
     }
+    .prompt-box pre { color: var(--text-secondary); }
     .copy-btn {
       position: absolute; top: 0.6rem; right: 0.6rem;
       font-family: var(--font-display); font-size: 0.68rem;
@@ -222,30 +286,87 @@
       background: var(--bg-elevated); color: var(--text-secondary);
       border: 1px solid var(--border-subtle); cursor: pointer;
       transition: all 0.2s;
+      z-index: 1;
     }
     .copy-btn:hover { color: var(--text-primary); border-color: var(--border-default); }
     .copy-btn.copied { color: var(--color-teal); border-color: var(--color-teal); }
-
-    .dummy-data {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      position: relative;
+    .copy-btn--inline {
+      position: static;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45em 0.9em;
+      background: rgba(0,196,204,0.10);
+      border-color: rgba(0,196,204,0.20);
     }
-    .dummy-data pre {
-      font-family: var(--font-display); font-size: 0.75rem;
-      color: var(--text-tertiary); white-space: pre-wrap; line-height: 1.65;
+    .copy-btn--inline:hover {
+      border-color: rgba(0,196,204,0.34);
+    }
+    .dummy-data {
+      margin-top: 0.5rem;
+    }
+    .dummy-data pre { color: var(--text-tertiary); }
+    .track-note {
+      margin: 0.9rem 0 1rem;
+      padding: 0.8rem 0.95rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0,196,204,0.18);
+      background: rgba(0,196,204,0.08);
+    }
+    .track-note p {
       margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+    .track-actions {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 0.7rem 0 0.95rem;
+    }
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.9rem;
+    }
+    .ai-card {
+      min-height: 100%;
+      padding: 0.95rem;
+    }
+    .ai-card p {
+      margin: 0.3rem 0 0;
+      font-size: 0.82rem;
+      line-height: 1.72;
+    }
+    .ai-links {
+      margin-top: 1rem;
+    }
+    .soft-note {
+      display: inline-block;
+      margin-left: 0.45rem;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      color: var(--text-tertiary);
+      opacity: 0.82;
+      letter-spacing: 0.01em;
+      vertical-align: middle;
     }
 
     /* Handout cards — smaller than slide cards */
     .paper .card { padding: 0.85rem; }
-    .paper .tip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.6rem; }
-    .paper .tip { padding: 0.65rem; }
+    .paper .tip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.6rem; }
+    .paper .tip {
+      padding: 0.9rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      min-height: 100%;
+    }
     .paper .tip strong { font-size: 0.85rem; }
-    .paper .tip p { font-size: 0.78rem; margin: 0.2rem 0 0; }
+    .paper .tip p { font-size: 0.78rem; margin: 0.28rem 0 0; }
 
     /* Scope block override for handout */
     .paper .scope-block {
@@ -332,6 +453,9 @@
 
     @media (max-width: 640px) {
       .paper { margin: 0.75rem; border-radius: 12px; padding: 1.25rem; }
+      .quickstart-grid { grid-template-columns: 1fr; }
+      .ai-grid { grid-template-columns: 1fr; }
+      .copy-btn--inline { width: 100%; }
       .paper .tip-grid { grid-template-columns: 1fr; }
       .paper .compare-grid { grid-template-columns: 1fr; }
       .paper .sandwich { max-width: 100%; }
@@ -353,12 +477,39 @@
     <h1><span class="text-glow">Vibe Coding</span> with <span class="text-gradient" style="font-style:italic;">Canva Code</span></h1>
     <div class="meta">
       <span>25 March 2026 &middot; HKU Libraries</span>
-      <a href="https://takasoap.github.io/vibe-coding-workshop/" target="_blank" style="color:var(--text-accent);">View slides &rarr;</a>
+      <a href="/" target="_blank" style="color:var(--text-accent);">View slides &rarr;</a>
     </div>
   </div>
 
+  <!-- ===== Quick Start ===== -->
+  <section id="quick-start">
+    <h2>Use This Handout Fast</h2>
+    <p>If you only need the essentials during the workshop, follow this path first:</p>
+    <div class="quickstart-grid">
+      <div class="quickstart-card">
+        <span class="label">1. Open the right tool</span>
+        <p>Go to Canva AI, then click the <strong>&lt;/&gt; Code</strong> button so you generate code rather than standard Canva designs.</p>
+      </div>
+      <div class="quickstart-card">
+        <span class="label">2. Pick one track</span>
+        <p>Choose the closest prompt template below, paste it into Canva Code, and only customize the topic once you have a working first draft.</p>
+      </div>
+      <div class="quickstart-card">
+        <span class="label">3. Test, then refine</span>
+        <p>Click every button, filter, and slider. If something breaks or feels off, describe the change in plain English and regenerate.</p>
+      </div>
+    </div>
+    <div class="quick-links">
+      <a class="quick-link" href="#canva-ai-overview">Canva AI recap</a>
+      <a class="quick-link" href="#choose-your-track">Jump to tracks</a>
+      <a class="quick-link" href="#step-by-step-guide">Jump to steps</a>
+      <a class="quick-link" href="#prompt-cheat-sheet">Prompt tips</a>
+      <a class="quick-link" href="#boundaries">Boundaries</a>
+    </div>
+  </section>
+
   <!-- ===== Before You Start ===== -->
-  <section>
+  <section id="before-you-start">
     <h2>Before You Start</h2>
     <p>This workshop is fully hands-on. You will use <strong>Canva</strong>, a free online design tool, to build interactive components for presentations &mdash; no coding experience required.</p>
     <p>You need a <strong>free Canva account</strong>. If you do not have one:</p>
@@ -374,12 +525,42 @@
     </p>
   </section>
 
+  <!-- ===== Canva AI Beyond Canva Code ===== -->
+  <section id="canva-ai-overview">
+    <h2>Canva AI Beyond Canva Code</h2>
+    <p>If you missed the guest sharing, here is the short version. <strong>Canva AI</strong> is the broader entry point in Canva. It can help you draft presentations, refine visuals, and open <strong>Code for me</strong> when you need something custom.</p>
+    <div class="callout">
+      <p><strong>Simple mental model:</strong> Canva AI is the umbrella. <strong>Design for me</strong> helps generate slide drafts. <strong>Code for me</strong> helps generate interactive components.</p>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-tertiary);margin-top:0.4rem;">You do not need to use all of this today. This section is here to show where Canva Code sits inside the broader Canva workflow.</p>
+    <div class="ai-grid">
+      <div class="card ai-card">
+        <p class="label">1. Draft the deck</p>
+        <p>From the homepage, open <strong>Canva AI</strong> and try <strong>Design for me</strong> for presentations. Enter your topic and requirements, then treat the result as an editable first draft.</p>
+      </div>
+      <div class="card ai-card">
+        <p class="label">2. Polish the slides</p>
+        <p>Continue editing in Canva. Useful features mentioned in the guest sharing included <strong>Background Remover</strong>, Canva&rsquo;s <strong>elements library</strong>, and <strong>YouTube embeds</strong> for richer presentation slides.</p>
+      </div>
+      <div class="card ai-card">
+        <p class="label">3. Add something custom</p>
+        <p>If you want a mini game, calculator, or interactive explainer, open <strong>Code for me</strong>. When it looks right, click <strong>Use in a design</strong> to place it in your presentation.</p>
+      </div>
+    </div>
+    <div class="quick-links ai-links">
+      <a class="quick-link" href="https://www.canva.com/ai-assistant/" target="_blank">Explore Canva AI</a>
+      <a class="quick-link" href="https://www.canva.com/create/ai-presentations/" target="_blank">AI Presentation Maker</a>
+      <a class="quick-link" href="https://www.canva.com/help/using-magic-presentations/" target="_blank">Canva AI presentation help</a>
+      <a class="quick-link" href="https://www.canva.com/help/canva-code/" target="_blank">Canva Code help</a>
+    </div>
+  </section>
+
   <!-- ===== What is Vibe Coding? ===== -->
   <section>
     <h2>What is &ldquo;Vibe Coding&rdquo;?</h2>
     <p>
-      <strong>Vibe coding</strong> is a way of creating software by describing what you want in everyday language, rather than writing technical code yourself. The term was coined by AI researcher <strong>Andrej Karpathy</strong> in early 2025, and was named
-      <span class="tag" style="font-size:0.75rem;padding:0.25em 0.7em;vertical-align:middle;">Collins Dictionary &middot; Word of the Year 2025</span>
+      <strong>Vibe coding</strong> is a way of creating software by describing what you want in everyday language, rather than writing technical code yourself. The term was coined by AI researcher <strong>Andrej Karpathy</strong> in early 2025.
+      <span class="soft-note">Later named Collins Dictionary's Word of the Year 2025.</span>
     </p>
     <p>
       Here is how it works: you <strong>describe</strong> what you want (&ldquo;build me a card gallery with filters&rdquo;), the AI <strong>generates</strong> the code, you <strong>inspect</strong> the result to see if it matches your vision, and then you <strong>refine</strong> it by describing what to change. No programming skills needed.
@@ -437,7 +618,7 @@
   <!-- ===== The Junior Intern Rule ===== -->
   <section>
     <h2>The &ldquo;Junior Intern&rdquo; Rule</h2>
-    <p>Think of Canva Code as a junior intern &mdash; fast, capable, but inexperienced. It does brilliantly with clear, simple tasks, but struggles when you ask for too much at once.</p>
+    <p>Canva Code is like a junior intern &mdash; fast and eager, but not always reliable, especially when the task gets too complex.</p>
     <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin:1rem 0;">
       <div class="card" style="flex:1;min-width:180px;text-align:center;">
         <p style="font-size:0.88rem;margin:0;"><strong>&ldquo;Build a 4-card comparison tool&rdquo;</strong></p>
@@ -455,47 +636,56 @@
   </section>
 
   <!-- ===== Choose Your Track ===== -->
-  <section>
+  <section id="choose-your-track">
     <h2>Choose Your Track</h2>
-    <p>Pick the track closest to your field. Each one includes a ready-to-use prompt and sample content so you can get started immediately, even if you do not have your own topic yet.</p>
+    <p>Pick the track closest to your field. Each one includes a ready-to-use prompt and low-risk sample content so you can get started immediately, even if you do not have your own topic yet.</p>
+    <div class="track-note">
+      <p><strong>Practical tip:</strong> If you are stuck, copy the prompt first, get a working widget, and then paste in the sample content. The examples below are intentionally low-risk placeholders you can swap later.</p>
+    </div>
 
     <div class="tabs">
-      <button class="tab-btn active" data-tab="track1">Track 1: Project Showcase</button>
+      <button class="tab-btn active" data-tab="track1">Track 1: Project / Idea Showcase</button>
       <button class="tab-btn" data-tab="track2">Track 2: Case Explorer</button>
       <button class="tab-btn" data-tab="track3">Track 3: Concept Explorer</button>
     </div>
 
     <div class="tab-panel active" id="track1">
       <h3>Project / Idea Showcase</h3>
-      <p>Best for: Anyone who wants to present a portfolio of projects, student work, or ideas with clickable tags and filters.</p>
+      <p>Best for: presenting projects, research themes, teaching ideas, student work, or service initiatives.</p>
+      <div class="track-actions">
+        <button class="copy-btn copy-btn--inline" data-targets="t1-prompt,t1-data" data-copied-label="Copied both!">Copy prompt + sample content together</button>
+      </div>
       <p class="label">Prompt Template</p>
       <div class="prompt-box">
         <button class="copy-btn" data-target="t1-prompt">Copy</button>
-        <pre id="t1-prompt">Build an interactive project showcase for a university presentation. Show 6 cards with a title, one-line summary, and tags. Add tag filters at the top and a search box. When a card is clicked, show a detail view with more information. Use a clean, professional design.</pre>
+        <pre id="t1-prompt">Build an interactive showcase for a university presentation. Show 6 cards featuring projects, research themes, teaching ideas, student work, or service initiatives. Each card should include a title, one-line summary, and tags. Add tag filters at the top and a search box. When a card is clicked, show a detail view with more information. Use a clean, professional design.</pre>
       </div>
-      <p class="label">Dummy Content (paste after the prompt, or replace with your own)</p>
+      <p class="label">Sample Content (paste after the prompt, or replace with your own)</p>
       <div class="dummy-data">
         <button class="copy-btn" data-target="t1-data" style="top:0.4rem;right:0.4rem;">Copy</button>
-        <pre id="t1-data">Use these 6 projects:
+        <pre id="t1-data">Use these 6 showcase items:
 
 1. "Urban Heat Map" — Mapping city temperatures using sensor data. Tags: Science, GIS
-2. "Legal Aid Chatbot" — AI assistant for basic legal questions. Tags: Law, AI
-3. "Patient Triage Tool" — Symptom-based priority sorting for clinics. Tags: Medicine, AI
+2. "Legal Information Navigator" — Guided directory of legal resources, referral channels, and key terms. Tags: Law, Information
+3. "Clinic Workflow Visualiser" — Visual guide to outpatient check-in, referral, and follow-up steps. Tags: Medicine, Operations
 4. "Heritage Walk AR" — Augmented-reality walking tour of historic sites. Tags: Humanities, Design
-5. "Budget Planner" — Interactive household budget calculator. Tags: Education, Finance
-6. "Lab Notebook" — Digital lab journal with photo upload. Tags: Science, Education</pre>
+5. "Teaching Toolkit Library" — Curated classroom activities and reusable lesson templates. Tags: Education, Teaching
+6. "Research Support Hub" — One-stop overview of data management, publishing, and copyright support. Tags: Research, Service</pre>
       </div>
     </div>
 
     <div class="tab-panel" id="track2">
       <h3>Case / Timeline Explorer</h3>
       <p>Best for: Humanities, Law, Education &mdash; anyone working with cases, policies, or historical events that unfold over time.</p>
+      <div class="track-actions">
+        <button class="copy-btn copy-btn--inline" data-targets="t2-prompt,t2-data" data-copied-label="Copied both!">Copy prompt + sample content together</button>
+      </div>
       <p class="label">Prompt Template</p>
       <div class="prompt-box">
         <button class="copy-btn" data-target="t2-prompt">Copy</button>
         <pre id="t2-prompt">Build an interactive timeline showing the evolution of data privacy legislation. Show 5 milestones in chronological order on a horizontal timeline. When a milestone is clicked, display a short description of that law and its key impact. Use a clean, professional design.</pre>
       </div>
-      <p class="label">Dummy Content</p>
+      <p class="label">Sample Content</p>
       <div class="dummy-data">
         <button class="copy-btn" data-target="t2-data" style="top:0.4rem;right:0.4rem;">Copy</button>
         <pre id="t2-data">Use these 5 milestones:
@@ -515,12 +705,15 @@
     <div class="tab-panel" id="track3">
       <h3>Concept / Variable Explorer</h3>
       <p>Best for: STEM, Medicine, Finance &mdash; anyone working with numbers and variables where changing an input affects the output.</p>
+      <div class="track-actions">
+        <button class="copy-btn copy-btn--inline" data-targets="t3-prompt,t3-data" data-copied-label="Copied both!">Copy prompt + sample content together</button>
+      </div>
       <p class="label">Prompt Template</p>
       <div class="prompt-box">
         <button class="copy-btn" data-target="t3-prompt">Copy</button>
         <pre id="t3-prompt">Build an interactive compound interest calculator. Add three sliders: one for initial investment (1000 to 50000), one for annual interest rate (1% to 15%), and one for time period (1 to 30 years). Calculate and display the final amount. Show a simple bar chart or growth line that updates when sliders change. Use a clean, professional design.</pre>
       </div>
-      <p class="label">Dummy Content</p>
+      <p class="label">Sample Content</p>
       <div class="dummy-data">
         <button class="copy-btn" data-target="t3-data" style="top:0.4rem;right:0.4rem;">Copy</button>
         <pre id="t3-data">Use these default values and labels:
@@ -542,9 +735,10 @@ Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
   </section>
 
   <!-- ===== Step-by-Step Guide ===== -->
-  <section>
+  <section id="step-by-step-guide">
     <h2>Step-by-Step Guide</h2>
-    <p>Follow these steps to create your first interactive component:</p>
+    <p>Follow these steps to create your first interactive component in Canva Code:</p>
+    <p style="font-size:0.85rem;color:var(--text-tertiary);margin-top:-0.2rem;">Canva AI is the broader menu. For this workshop, we are using <strong>Code</strong>, not <strong>Design for me</strong>.</p>
     <ol class="step-list">
       <li><p>Open <a href="https://www.canva.com" target="_blank"><strong>canva.com</strong></a> and log in to your account.</p></li>
       <li><p>Click on the <strong>Canva AI</strong> text box on the homepage. At the bottom of the text box, click the <a href="https://www.canva.com/ai/code" target="_blank" class="canva-code-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>Code</a> button.</p></li>
@@ -552,7 +746,7 @@ Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
       <li><p>Paste the prompt into the Code text box. Feel free to edit it &mdash; change the topic, the number of items, or the style. Then press <strong>Submit</strong>.</p></li>
       <li><p>Wait a few seconds. Canva will generate a working interactive component. Click around &mdash; test the buttons, filters, and interactions.</p></li>
       <li><p>Not happy? Type a follow-up instruction describing what to change (see the <strong>Inspect &amp; Refine</strong> section below).</p></li>
-      <li><p>When you are satisfied, click <strong>&ldquo;Use in a design&rdquo;</strong> to embed the component into your Canva presentation slide.</p></li>
+      <li><p>If you are ready, click <strong>&ldquo;Use in a design&rdquo;</strong> to embed the component into your Canva presentation slide. If not, keep refining and come back to embedding later.</p></li>
     </ol>
     <div class="callout callout-warn">
       <p><strong>Common mistake:</strong> Do not type directly into the Canva AI text box and press Enter &mdash; that creates AI-generated designs, not code. Always click the <strong>&lt;/&gt; Code</strong> button first.</p>
@@ -578,8 +772,8 @@ Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
 
   <!-- ===== The Interactive Sandwich ===== -->
   <section>
-    <h2>The &ldquo;Interactive Sandwich&rdquo;</h2>
-    <p>When you put your component into a presentation, do not just drop it onto a blank slide. Give it context. Frame it like a sandwich with three layers:</p>
+    <h2>The &ldquo;Interactive Sandwich&rdquo; Mindset</h2>
+    <p>This is a presentation mindset, not something everyone must finish during the workshop. When you put your component into a presentation, do not just drop it onto a blank slide. Give it context. Frame it like a sandwich with three layers:</p>
     <div class="sandwich" style="margin:1rem auto;max-width:560px;">
       <div class="sandwich-layer sandwich-bread">
         <strong>Setup</strong> &mdash; Tell your audience <em>why</em> they are interacting
@@ -594,10 +788,11 @@ Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
     <p style="color:var(--text-tertiary);font-style:italic;text-align:center;margin-top:0.5rem;font-size:0.85rem;">
       Example: &ldquo;Adjust the interest rate below &mdash; what happens after 30 years?&rdquo;
     </p>
+    <p style="font-size:0.85rem;color:var(--text-tertiary);text-align:center;max-width:620px;margin:0.65rem auto 0;">If your widget is not ready to embed yet, that is fine. You can still sketch the setup and takeaway first, then return to the Canva basics later.</p>
   </section>
 
   <!-- ===== Prompt Cheat Sheet ===== -->
-  <section>
+  <section id="prompt-cheat-sheet">
     <h2>Prompt Cheat Sheet</h2>
     <p>A good prompt has four elements. The more specific you are, the better the result:</p>
     <div class="tip-grid">
@@ -618,7 +813,7 @@ Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
   </section>
 
   <!-- ===== Boundaries ===== -->
-  <section>
+  <section id="boundaries">
     <h2>Interaction &ne; Understanding</h2>
     <p>AI-generated components can look very professional, but that does not mean the content inside them is correct. Always verify facts, formulas, and data with your own expertise before presenting to an audience.</p>
     <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin:1rem 0;">
@@ -645,7 +840,7 @@ Show a bar chart comparing Year 1, Year 5, Year 10, Year 20, Year 30.</pre>
         </ul>
       </div>
       <div class="card" style="padding:0.85rem;">
-        <p class="label text-accent" style="margin-bottom:0.4rem;">Canva Code (Vibe Coding)</p>
+        <p class="label text-accent" style="margin-bottom:0.4rem;">Canva Code</p>
         <ul class="compare-list">
           <li>Custom explorers</li>
           <li>Variable simulators</li>
@@ -716,14 +911,64 @@ document.querySelectorAll('.tab-btn').forEach(function(btn) {
   });
 });
 
+document.querySelectorAll('.quick-link[href^="#"]').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    var targetId = link.getAttribute('href');
+    var target = document.querySelector(targetId);
+    if (!target) return;
+    e.preventDefault();
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      target.scrollIntoView();
+      history.replaceState(null, '', targetId);
+      return;
+    }
+
+    var startY = window.pageYOffset;
+    var endY = target.getBoundingClientRect().top + startY - 12;
+    var duration = 320;
+    var startTime = null;
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function step(timestamp) {
+      if (startTime === null) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      window.scrollTo(0, startY + (endY - startY) * easeOutCubic(progress));
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        history.replaceState(null, '', targetId);
+      }
+    }
+
+    requestAnimationFrame(step);
+  });
+});
+
 document.querySelectorAll('.copy-btn').forEach(function(btn) {
   btn.addEventListener('click', function() {
-    var target = document.getElementById(btn.dataset.target);
-    if (!target) return;
-    navigator.clipboard.writeText(target.textContent.trim()).then(function() {
-      btn.textContent = 'Copied!';
+    var ids = [];
+    if (btn.dataset.targets) {
+      ids = btn.dataset.targets.split(',').map(function(id) { return id.trim(); }).filter(Boolean);
+    } else if (btn.dataset.target) {
+      ids = [btn.dataset.target.trim()];
+    }
+    var text = ids.map(function(id) {
+      var target = document.getElementById(id);
+      return target ? target.textContent.trim() : '';
+    }).filter(Boolean).join('\n\n');
+    if (!text) return;
+    if (!btn.dataset.originalText) btn.dataset.originalText = btn.textContent.trim();
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = btn.dataset.copiedLabel || 'Copied!';
       btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+      setTimeout(function() {
+        btn.textContent = btn.dataset.originalText;
+        btn.classList.remove('copied');
+      }, 1500);
     });
   });
 });
