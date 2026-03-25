@@ -209,7 +209,7 @@ a { color: var(--text-accent); text-decoration: none; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-lg);
-  align-items: start;
+  align-items: stretch;
 }
 
 /* =============================================
@@ -805,14 +805,22 @@ a.canva-code-pill:hover {
   padding: var(--space-md);
 }
 
-/* Track columns (Slide 6) */
+/* Track columns (Slide 9 — equal-height row) */
 .track-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-height: 0;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   padding: var(--space-lg) var(--space-md);
   text-align: center;
   transition: border-color var(--dur-normal), transform var(--dur-normal);
+}
+.track-card > .tag {
+  margin-top: auto;
 }
 .track-card:hover {
   border-color: var(--color-teal);
@@ -844,6 +852,11 @@ a.canva-code-pill:hover {
 [data-theme="light"] .qr-dark-mode { display: none !important; }
 [data-theme="light"] .qr-light-mode { display: block !important; }
 
+.track-card .track-number,
+.track-card h3,
+.track-card p {
+  width: 100%;
+}
 .track-card .track-number {
   font-family: var(--font-display);
   font-size: var(--text-3xl);
@@ -1006,6 +1019,44 @@ a.canva-code-pill:hover {
   .slide--split .slide-inner {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
+  }
+}
+
+/* =============================================
+   Theme switch — animated cross-fade (View Transitions)
+   ============================================= */
+@supports (view-transition-name: root) {
+  html {
+    view-transition-name: root;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.52s;
+    animation-timing-function: var(--ease-out);
+  }
+
+  /* Slight “gradient” feel: brightness + saturation drift while cross-fading */
+  ::view-transition-old(root) {
+    animation-name: theme-switch-out;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: theme-switch-in;
+  }
+}
+
+@keyframes theme-switch-out {
+  to {
+    opacity: 0;
+    filter: brightness(1.08) saturate(0.88);
+  }
+}
+
+@keyframes theme-switch-in {
+  from {
+    opacity: 0;
+    filter: brightness(0.9) saturate(1.18) hue-rotate(-12deg);
   }
 }
 
