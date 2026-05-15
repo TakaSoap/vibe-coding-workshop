@@ -238,14 +238,53 @@ class SlideEngine {
 }
 
 /* --- Copy-to-clipboard helper --- */
+function normalizeWorkshopCopyText(source) {
+  const raw = typeof source === 'string' ? source : source ? source.textContent : '';
+  const mode = source && source.dataset ? source.dataset.copyMode || '' : '';
+  const text = raw.replace(/\u00a0/g, ' ').replace(/\r\n?/g, '\n');
+
+  if (mode === 'plain') {
+    return text.replace(/\s+/g, ' ').trim();
+  }
+
+  return text
+    .split('\n')
+    .map(line => line.trim())
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function legacyCopyText(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '-9999px';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  document.body.removeChild(textarea);
+  if (!copied) throw new Error('Copy command failed');
+}
+
+function writeClipboardText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text).catch(() => legacyCopyText(text));
+  }
+  return Promise.resolve(legacyCopyText(text));
+}
+
 document.addEventListener('click', e => {
   const btn = e.target.closest('.copy-btn');
   if (!btn) return;
   const box = btn.closest('.prompt-box');
   const textEl = box ? box.querySelector('.prompt-text') : null;
-  const text = btn.dataset.copy || (textEl ? textEl.textContent : '');
+  const rawText = btn.dataset.copy || (textEl ? textEl.textContent : '');
+  const text = normalizeWorkshopCopyText(textEl || rawText);
   if (!text) return;
-  navigator.clipboard.writeText(text.trim()).then(() => {
+  writeClipboardText(text).then(() => {
     btn.classList.add('copied');
     setTimeout(() => btn.classList.remove('copied'), 1500);
   });

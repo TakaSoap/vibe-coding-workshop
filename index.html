@@ -15,7 +15,7 @@
       href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/latin.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/main.css?v=citers-2026-script-refresh-2" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css"
@@ -64,9 +64,14 @@
       <!-- ===== Slide 0 : Pre-show ===== -->
       <section class="slide slide--center" data-slide="0">
         <div class="slide-inner">
-          <p class="label fade-content">CITERS 2026 &middot; Professional Workshop</p>
-          <h2 class="fade-content mt-sm" style="max-width: 980px">
-            <span class="text-glow">Vibe Coding</span> for Teaching and Learning
+          <p class="label code-label fade-content">
+            &lt; CITERS 2026 Workshop /&gt;
+          </p>
+          <h2 class="fade-content mt-sm workshop-title workshop-title--preshow">
+            <span class="title-nowrap"
+              ><span class="text-glow">Vibe Coding</span></span
+            >
+            <span class="title-nowrap">for Teaching and Learning</span>
           </h2>
           <p class="subtitle fade-content mt-sm">
             Interactive educational design with
@@ -74,12 +79,13 @@
               >Canva Code</span
             >.
             Open the link below on your laptop to access today&rsquo;s handout.
+            You will need a Canva account for the hands-on part.
           </p>
           <p
             class="fade-content mt-xs"
             style="font-size: var(--text-xs); color: var(--text-tertiary)"
           >
-            60-minute hands-on session &middot; 16 May 2026
+            16 May 2026 &middot; Sign in or create a free Canva account now
           </p>
 
           <div
@@ -154,14 +160,16 @@
       <section class="slide slide--center" data-slide="1">
         <div class="slide-inner">
           <p
-            class="label fade-content"
+            class="label code-label fade-content"
             style="font-family: var(--font-display)"
           >
-            CITERS 2026 &middot; Professional Workshop
+            &lt; CITERS 2026 Workshop /&gt;
           </p>
-          <h1 class="mt-sm" style="max-width: 980px">
-            <span class="text-glow">Vibe Coding</span> for Teaching and
-            Learning
+          <h1 class="mt-sm workshop-title">
+            <span class="title-nowrap"
+              ><span class="text-glow">Vibe Coding</span></span
+            >
+            <span class="title-nowrap">for Teaching and Learning</span>
           </h1>
           <p class="subtitle fade-content mt-sm">
             Interactive Educational Design with
@@ -173,7 +181,7 @@
             class="fade-content mt-md"
             style="font-size: var(--text-sm); color: var(--text-tertiary)"
           >
-            Zesen Gao &middot; Learning Technology Developer &middot; 60 minutes
+            Zesen Gao &middot; Learning Technology Developer &middot; HKU Libraries
           </p>
         </div>
       </section>
@@ -243,52 +251,213 @@
                 id="mini-cards"
                 style="display: flex; flex-direction: column; gap: 8px"
               >
-                <div class="mini-card" data-tags="stem">
+                <div
+                  class="mini-card"
+                  data-tags="stem"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
                   <strong>Water Cycle Explorer</strong>
                   <p class="mini-summary">Interactive concept visualizer</p>
                   <div class="mini-detail">
-                    Click each stage to see what changes, then predict where a
-                    water droplet goes next.
+                    <p class="mini-detail-text">
+                      Click each stage to see what changes, then predict where
+                      a water droplet goes next.
+                    </p>
+                    <div class="mini-visual">
+                      <div class="mini-visual-title">
+                        <span>Water Cycle Explorer</span>
+                        <span class="mini-pill">Click-to-reveal</span>
+                      </div>
+                      <div class="cycle-flow">
+                        <div class="cycle-stage">
+                          <span class="cycle-icon">↑</span>
+                          <strong>Evaporation</strong>
+                          Heat lifts water.
+                        </div>
+                        <div class="cycle-stage">
+                          <span class="cycle-icon">☁</span>
+                          <strong>Condensation</strong>
+                          Clouds form.
+                        </div>
+                        <div class="cycle-stage">
+                          <span class="cycle-icon">↓</span>
+                          <strong>Rain</strong>
+                          Water falls.
+                        </div>
+                        <div class="cycle-stage">
+                          <span class="cycle-icon">≈</span>
+                          <strong>Collection</strong>
+                          Rivers return.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mini-card" data-tags="literacy inquiry">
+                <div
+                  class="mini-card"
+                  data-tags="literacy inquiry"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
                   <strong>Argument Builder</strong>
                   <p class="mini-summary">Evidence sorting activity</p>
                   <div class="mini-detail">
-                    Sort claims, evidence, and counterarguments before drafting
-                    a short response.
+                    <p class="mini-detail-text">
+                      Sort claims, evidence, and counterarguments before
+                      drafting a short response.
+                    </p>
+                    <div class="mini-visual">
+                      <div class="mini-visual-title">
+                        <span>Argument Builder</span>
+                        <span class="mini-pill">Sort first</span>
+                      </div>
+                      <div class="evidence-board">
+                        <div class="evidence-chip">
+                          <strong>Claim</strong>
+                          Plastic use should be reduced.
+                        </div>
+                        <div class="evidence-chip">
+                          <strong>Evidence</strong>
+                          Canteen count: 420 boxes/week.
+                        </div>
+                        <div class="evidence-chip">
+                          <strong>Counter</strong>
+                          Reusable boxes need cleaning.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mini-card" data-tags="inquiry">
+                <div
+                  class="mini-card"
+                  data-tags="inquiry"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
                   <strong>Exit Ticket Picker</strong>
                   <p class="mini-summary">Formative feedback prompt bank</p>
                   <div class="mini-detail">
-                    Choose a lesson objective and reveal a quick understanding
-                    check question.
+                    <p class="mini-detail-text">
+                      Choose a lesson objective and reveal a quick
+                      understanding check question.
+                    </p>
+                    <div class="mini-visual">
+                      <div class="mini-visual-title">
+                        <span>Exit Ticket Picker</span>
+                        <span class="mini-pill">Quick check</span>
+                      </div>
+                      <div class="prompt-stack">
+                        <div class="prompt-card is-active">
+                          <strong>Objective: Explain cause and effect</strong>
+                          What changed first? What changed because of it?
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mini-card" data-tags="stem">
+                <div
+                  class="mini-card"
+                  data-tags="stem"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
                   <strong>Fraction Visualizer</strong>
                   <p class="mini-summary">Slider-based maths model</p>
                   <div class="mini-detail">
-                    Move the numerator and denominator sliders to see the
-                    fraction and number line update.
+                    <p class="mini-detail-text">
+                      Move the numerator and denominator sliders to see the
+                      fraction and number line update.
+                    </p>
+                    <div class="mini-visual">
+                      <div class="mini-visual-title">
+                        <span>Fraction Visualizer</span>
+                        <span class="mini-pill">3 / 6</span>
+                      </div>
+                      <div class="fraction-demo">
+                        <div class="fraction-bar">
+                          <span class="filled"></span>
+                          <span class="filled"></span>
+                          <span class="filled"></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                        <div class="number-line"><span>0</span><span>1</span></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mini-card" data-tags="literacy">
+                <div
+                  class="mini-card"
+                  data-tags="literacy"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
                   <strong>Reading Strategy Cards</strong>
                   <p class="mini-summary">Filterable classroom support</p>
                   <div class="mini-detail">
-                    Filter strategies by before, during, or after reading and
-                    open a quick classroom example.
+                    <p class="mini-detail-text">
+                      Filter strategies by before, during, or after reading and
+                      open a quick classroom example.
+                    </p>
+                    <div class="mini-visual">
+                      <div class="mini-visual-title">
+                        <span>Reading Strategy Cards</span>
+                        <span class="mini-pill">Before / During / After</span>
+                      </div>
+                      <div class="strategy-tabs">
+                        <div class="strategy-chip">
+                          <strong>Before</strong>
+                          Predict.
+                        </div>
+                        <div class="strategy-chip">
+                          <strong>During</strong>
+                          Ask why.
+                        </div>
+                        <div class="strategy-chip">
+                          <strong>After</strong>
+                          Summarise.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mini-card" data-tags="inquiry literacy">
+                <div
+                  class="mini-card"
+                  data-tags="inquiry literacy"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
                   <strong>Project Showcase</strong>
                   <p class="mini-summary">Student work gallery</p>
                   <div class="mini-detail">
-                    Browse student inquiry projects by topic and open a short
-                    reflection prompt.
+                    <p class="mini-detail-text">
+                      Browse student inquiry projects by topic and open a short
+                      reflection prompt.
+                    </p>
+                    <div class="mini-visual">
+                      <div class="mini-visual-title">
+                        <span>Project Showcase</span>
+                        <span class="mini-pill">Gallery</span>
+                      </div>
+                      <div class="project-grid">
+                        <div class="project-tile">
+                          <strong>Solar Oven</strong>
+                          Science fair
+                        </div>
+                        <div class="project-tile">
+                          <strong>Local History Map</strong>
+                          Inquiry task
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -762,7 +931,11 @@
               <span class="copy-toast">Copied!</span>
             </button>
             <p class="label mb-sm">Track 1 &mdash; Prompt</p>
-            <p class="prompt-text" style="white-space: pre-wrap">
+            <p
+              class="prompt-text"
+              data-copy-mode="plain"
+              style="white-space: pre-wrap"
+            >
               Build an interactive lesson activity showcase for teachers. Show
               6 cards featuring classroom activities, examples, student project
               ideas, or learning resources. Each card should include a title,
@@ -1504,7 +1677,7 @@
     <!-- ============================================= -->
     <script src="js/theme-transition.js"></script>
     <script src="js/background.js"></script>
-    <script type="module" src="js/engine.js"></script>
+    <script type="module" src="js/engine.js?v=citers-2026-script-refresh-2"></script>
     <script src="widgets/gas-law.js" defer></script>
 
     <script>
@@ -1604,6 +1777,20 @@
         if (demo) {
           var tabs = demo.querySelectorAll(".mini-tab");
           var cards = demo.querySelectorAll(".mini-card");
+          var resetExpandedCards = function () {
+            cards.forEach(function (c) {
+              c.classList.remove("expanded", "hidden-by-expand");
+              c.setAttribute("aria-expanded", "false");
+            });
+          };
+          var applyFilter = function (filter) {
+            cards.forEach(function (c) {
+              var isMatch =
+                filter === "all" ||
+                c.dataset.tags.split(" ").indexOf(filter) >= 0;
+              c.classList.toggle("filtered-out", !isMatch);
+            });
+          };
           tabs.forEach(function (tab) {
             tab.addEventListener("click", function (e) {
               e.stopPropagation();
@@ -1611,27 +1798,62 @@
                 t.classList.remove("active");
               });
               tab.classList.add("active");
-              var f = tab.dataset.filter;
-              cards.forEach(function (c) {
-                c.style.display =
-                  f === "all" || c.dataset.tags.split(" ").indexOf(f) >= 0
-                    ? ""
-                    : "none";
-                c.classList.remove("expanded");
-              });
+              resetExpandedCards();
+              applyFilter(tab.dataset.filter);
             });
           });
+          applyFilter("all");
           cards.forEach(function (card) {
-            card.addEventListener("click", function (e) {
+            var toggleCard = function (e) {
               e.stopPropagation();
               var wasExpanded = card.classList.contains("expanded");
-              cards.forEach(function (c) {
-                c.classList.remove("expanded");
-              });
-              if (!wasExpanded) card.classList.add("expanded");
+              resetExpandedCards();
+              if (!wasExpanded) {
+                card.classList.add("expanded");
+                card.setAttribute("aria-expanded", "true");
+                cards.forEach(function (c) {
+                  if (
+                    c !== card &&
+                    !c.classList.contains("filtered-out")
+                  ) {
+                    c.classList.add("hidden-by-expand");
+                  }
+                });
+              }
+            };
+            card.addEventListener("click", toggleCard);
+            card.addEventListener("keydown", function (e) {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                toggleCard(e);
+              }
             });
           });
         }
+
+        /* --- Normalize copied prompt text --- */
+        window.getWorkshopCopyText = function (source) {
+          var raw =
+            typeof source === "string"
+              ? source
+              : source
+              ? source.textContent
+              : "";
+          var mode =
+            source && source.dataset ? source.dataset.copyMode || "" : "";
+          var text = raw.replace(/\u00a0/g, " ").replace(/\r\n?/g, "\n");
+          if (mode === "plain") {
+            return text.replace(/\s+/g, " ").trim();
+          }
+          return text
+            .split("\n")
+            .map(function (line) {
+              return line.trim();
+            })
+            .join("\n")
+            .replace(/\n{3,}/g, "\n\n")
+            .trim();
+        };
 
         /* --- Countdown timer (Slide 12) --- */
         var display = document.getElementById("countdown-display");
