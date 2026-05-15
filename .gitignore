@@ -2,3 +2,10 @@ latest_reg_list.txt
 *.md
 .DS_Store
 agent-tools/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
