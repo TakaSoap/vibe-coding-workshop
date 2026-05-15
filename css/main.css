@@ -245,6 +245,21 @@ p, li, .body {
   letter-spacing: 0.12em;
   color: var(--text-tertiary);
 }
+.code-label {
+  text-transform: none;
+  letter-spacing: 0.06em;
+}
+.workshop-title {
+  max-width: 1200px;
+  font-size: clamp(2.35rem, 3.6vw, 3.25rem);
+}
+.workshop-title--preshow {
+  font-size: clamp(2.2rem, 3.4vw, 3rem);
+}
+.title-nowrap {
+  display: inline-block;
+  white-space: nowrap;
+}
 
 .text-gradient {
   background: linear-gradient(135deg, var(--color-teal), var(--color-purple));
@@ -727,6 +742,9 @@ a.canva-code-pill:hover {
 }
 
 /* Mini-card (Slide 2 right) */
+#mini-demo {
+  min-height: 440px;
+}
 .mini-card {
   padding: 10px 14px;
   background: var(--bg-surface);
@@ -761,9 +779,143 @@ a.canva-code-pill:hover {
   background: var(--bg-card);
 }
 .mini-card.expanded .mini-detail {
-  max-height: 80px;
+  max-height: 320px;
   opacity: 1;
   margin-top: 8px;
+}
+.mini-card.filtered-out,
+.mini-card.hidden-by-expand {
+  display: none;
+}
+.mini-detail-text {
+  margin-bottom: 8px;
+}
+.mini-visual {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(0,196,204,0.08), rgba(111,0,255,0.08));
+  padding: 10px;
+}
+.mini-visual-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+}
+.mini-pill {
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  padding: 2px 7px;
+  color: var(--color-teal-light);
+  background: rgba(0,196,204,0.08);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+.cycle-flow,
+.evidence-board,
+.prompt-stack,
+.strategy-tabs,
+.project-grid {
+  display: grid;
+  gap: 6px;
+}
+.cycle-flow {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.cycle-stage,
+.evidence-chip,
+.prompt-card,
+.strategy-chip,
+.project-tile {
+  border: 1px solid var(--border-subtle);
+  border-radius: 7px;
+  background: rgba(255,255,255,0.05);
+  padding: 7px;
+  color: var(--text-secondary);
+}
+.cycle-stage {
+  text-align: center;
+  min-height: 54px;
+}
+.cycle-stage strong,
+.evidence-chip strong,
+.prompt-card strong,
+.strategy-chip strong,
+.project-tile strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  margin-bottom: 2px;
+}
+.cycle-icon {
+  display: block;
+  color: var(--color-teal-light);
+  font-size: 1rem;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+.evidence-board {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.prompt-stack {
+  grid-template-columns: 1fr;
+}
+.prompt-card.is-active {
+  border-color: rgba(0,196,204,0.6);
+  box-shadow: 0 0 12px rgba(0,196,204,0.14);
+}
+.fraction-demo {
+  display: grid;
+  gap: 8px;
+}
+.fraction-bar {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: 7px;
+}
+.fraction-bar span {
+  height: 22px;
+  border-right: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+}
+.fraction-bar span:last-child {
+  border-right: 0;
+}
+.fraction-bar span.filled {
+  background: linear-gradient(135deg, var(--color-teal), var(--color-purple));
+}
+.number-line {
+  position: relative;
+  height: 18px;
+  border-bottom: 2px solid var(--border-strong);
+  color: var(--text-tertiary);
+  font-size: 0.68rem;
+}
+.number-line::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  box-shadow: 0 0 12px rgba(0,196,204,0.35);
+}
+.number-line span:last-child {
+  float: right;
+}
+.strategy-tabs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.project-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 /* Golden rule highlight */

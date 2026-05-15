@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/latin.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=citers-2026-script-refresh-2">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
   <script>
@@ -1081,6 +1081,41 @@ document.querySelectorAll('.copy-btn').forEach(function(btn) {
     }
   }
   var originalLabel = textNode ? textNode.textContent : btn.textContent.trim();
+  function getCopyText(target) {
+    if (!target) return '';
+    var text = target.textContent.replace(/\u00a0/g, ' ').replace(/\r\n?/g, '\n');
+    var shouldCollapse = target.dataset.copyMode === 'plain' || /-prompt$/.test(target.id);
+    if (shouldCollapse) {
+      return text.replace(/\s+/g, ' ').trim();
+    }
+    return text
+      .split('\n')
+      .map(function(line) { return line.trim(); })
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+  function legacyCopyText(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.top = '-9999px';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    var copied = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    if (!copied) throw new Error('Copy command failed');
+  }
+  function writeClipboardText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function() {
+        legacyCopyText(text);
+      });
+    }
+    return Promise.resolve(legacyCopyText(text));
+  }
 
   btn.addEventListener('click', function() {
     var ids = [];
@@ -1091,14 +1126,14 @@ document.querySelectorAll('.copy-btn').forEach(function(btn) {
     }
     var text = ids.map(function(id) {
       var target = document.getElementById(id);
-      return target ? target.textContent.trim() : '';
+      return getCopyText(target);
     }).filter(Boolean).join('\n\n');
     if (!text) return;
     var copiedLabel = btn.dataset.copiedLabel || 'Copied!';
     if (textNode) textNode.textContent = copiedLabel;
     else btn.textContent = copiedLabel;
     btn.classList.add('copied');
-    navigator.clipboard.writeText(text);
+    writeClipboardText(text);
     setTimeout(function() {
       if (textNode) textNode.textContent = originalLabel;
       else btn.textContent = originalLabel;
